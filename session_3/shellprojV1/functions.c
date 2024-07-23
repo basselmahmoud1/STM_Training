@@ -2,6 +2,15 @@
 #include "functions.h"
 
 
+int  counter;
+int error_checker = 0;
+
+const char *shellmsg ="n3m ya 8aly>";
+
+char *tokens[5];
+char command[101];
+
+
 void read_usr (void)
 {
 	ssize_t readsize = 0;

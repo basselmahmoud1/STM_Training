@@ -14,10 +14,10 @@
 #define STDOUT 1
 #define STDERR 2
  
-const char *shellmsg ="n3m ya 8aly>";
+extern const char *shellmsg ;
 
-char *tokens[5];
-char commands[101];
+extern char *tokens[5];
+extern char command[101];
 
 /*typedef enum
 {
@@ -28,8 +28,8 @@ mv ,
 help 
 }supp_commands;*/
 
-int  counter;
-int error_checker = 0;
+extern int  counter;
+extern int error_checker ;
 //supp_commands given_command ;
 
 
