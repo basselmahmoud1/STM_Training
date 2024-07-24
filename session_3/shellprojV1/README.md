@@ -4,7 +4,7 @@ this program is at its beginning so there will be more modifications & versions
 
 ## Compilation command 
 ```
-gcc main.c functions.o -o myShell
+gcc main.c functions.c -o myShell
 
 ```
 ## output example
