@@ -10,9 +10,10 @@
 
 
 
-#define STDIN  0
-#define STDOUT 1
-#define STDERR 2
+#define STDIN  		0
+#define STDOUT 		1
+#define STDERR 		2
+#define PATH_MAX	4096 
  
 extern const char *shellmsg ;
 
@@ -41,5 +42,8 @@ void write_usr ( const char *buffer , size_t count);
 
 void perform_comm (void);
 
+void pwd (void);
+
+void echo (void);
 
 #endif
