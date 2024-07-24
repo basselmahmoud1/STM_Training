@@ -216,15 +216,14 @@ void mv (void)
 		}	
 	}
 	
-	if (error_checker == 0)
+	
+	int error_state = remove( tokens[1] );
+	if ( error_state != 0)
 	{
-		int error_state = remove( tokens[1] );
-		if ( error_state != 0)
-		{
-			perror("remove file:");
-			error_checker = 1;
-		}
+		perror("remove file:");
+		error_checker = 1;
 	}
+
 	
 	if(count_S == -1)
 	{
