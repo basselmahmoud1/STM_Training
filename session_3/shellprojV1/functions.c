@@ -22,7 +22,7 @@ void read_usr (void)
 		perror("read:");
 		error_checker = 1;
 	}
-	if(readsize>0)
+	if(readsize>1)
 		command [readsize-1]='\0';
 	else 
 		command [readsize+1]='\0';
@@ -110,6 +110,7 @@ void cp (void)
 				break;
 			}
 		}
+		
 		if(flag==0)
 			source_name = tokens[1]  ;
 		
@@ -194,7 +195,7 @@ void mv (void)
 	
 	
 	
-	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC , S_IRUSR | S_IWUSR ) ;
+	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_EXCL , S_IRUSR | S_IWUSR ) ;
 	if (fd_T ==-1)
 	{
 		perror ("creating target file:");
