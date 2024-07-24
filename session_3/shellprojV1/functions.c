@@ -119,7 +119,7 @@ void cp (void)
 	
 	
 	
-	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC , S_IRUSR | S_IWUSR ) ;
+	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR ) ;
 	if (fd_T ==-1)
 	{
 		perror ("creating target file:");
