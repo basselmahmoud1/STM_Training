@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include  <stddef.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 
 
@@ -14,6 +16,7 @@
 #define STDOUT 		1
 #define STDERR 		2
 #define PATH_MAX	4096 
+#define MAX_TOKENS	5
  
 extern const char *shellmsg ;
 
@@ -45,5 +48,7 @@ void perform_comm (void);
 void pwd (void);
 
 void echo (void);
+
+void cp (void);
 
 #endif
