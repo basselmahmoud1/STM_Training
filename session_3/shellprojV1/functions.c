@@ -5,7 +5,7 @@
 int  counter;
 int error_checker = 0;
 
-const char *shellmsg ="n3m ya 8aly>";
+const char *shellmsg ="n3m ya 8aly > ";
 
 char *tokens[5];
 char command[101];
@@ -51,27 +51,27 @@ void perform_comm (void)
 	
 	if(strcmp(tokens[0],"cp")==0)
 	{
-		write_usr("cp is entered",15);
+		write_usr("cp is entered\n", strlen("cp is entered\n") );
 	}
 	
 	if(strcmp(tokens[0],"mv")==0)
 	{
-		write_usr("mv is entered",15);
+		write_usr("mv is entered\n", strlen("mv is entered\n") );
 	}
 	
 	if(strcmp(tokens[0],"pwd")==0)
 	{
-		write_usr("pwd is entered",16);
+		write_usr("pwd is entered\n", strlen("pwd is entered\n") );
 	}
 	
 	if(strcmp(tokens[0],"help")==0)
 	{
-		write_usr("help is entered",20);
+		write_usr("help is entered\n", strlen("help is entered\n") );
 	}
 	
 	if(strcmp(tokens[0],"exit")==0)
 	{
-		write_usr("exit is entered",15);
+		write_usr("exit is entered\n", strlen("exit is entered\n") );
 	}
 	
 
