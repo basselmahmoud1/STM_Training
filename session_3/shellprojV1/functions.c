@@ -84,8 +84,10 @@ void echo (void)
 
 void cp (void) 
 {
-	char buffer [100];
+	char buffer [100] ;
+	char *source_name;
 	ssize_t count_S , count_T ;
+	int i =0 ;
 	
 	int fd_S = open (tokens[1] ,O_RDONLY  );
 	if (fd_S ==-1)
@@ -93,6 +95,22 @@ void cp (void)
 		perror ("open source file:");
 		error_checker = 1;
 	}
+	
+	if( tokens[2][strlen(tokens[2])-1] == '/' )
+	{
+		for( i = tokens[1][strlen(tokens[1])-1]  ; i >= 0 ; i--)
+		{
+			if (tokens[1][i] == '/')
+			{
+				source_name = tokens[1] + i +1 ;
+				break;
+			}
+		}
+		
+		strcat(tokens[2],source_name);
+	}
+	
+	
 	
 	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC , S_IRUSR | S_IWUSR ) ;
 	if (fd_T ==-1)
