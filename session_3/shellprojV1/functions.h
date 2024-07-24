@@ -21,7 +21,7 @@
 extern const char *shellmsg ;
 
 extern char *tokens[5];
-extern char command[101];
+extern char command[1001];
 
 /*typedef enum
 {

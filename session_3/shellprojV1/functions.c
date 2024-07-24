@@ -8,7 +8,7 @@ int error_checker = 0;
 const char *shellmsg ="n3m ya 8aly > ";
 
 char *tokens[5];
-char command[101];
+char command[1001];
 char CWD [PATH_MAX];
 
 
@@ -22,7 +22,7 @@ void read_usr (void)
 		perror("read:");
 		error_checker = 1;
 	}
-	command [readsize+1]='\0';
+	command [readsize]='\0';
 	
 	*tokens = strtok(command , " ");
 	counter = 0 ;
@@ -99,20 +99,27 @@ void cp (void)
 	{
 		perror ("creating target file:");
 		error_checker = 1;
+		close(fd_S);
+		return ;
 	}
 	
-	do
+	while ( (count_S = read (fd_S , buffer , sizeof(buffer) )) > 0 )
 	{
-		count_S = read (fd_S , buffer , 100 );
-		if(count_S == -1)
+		
+		count_T = write (fd_T ,buffer ,count_S );
+		if(count_T == -1)
+		{ 
 			perror ("read source:");
-			
-		write (fd_T ,buffer ,100 );
-		if(count_T == -1) 
-			perror ("read source:");
-			
-	}while ( count_S != 0 );
+			error_checker =1 ;
+			break;
+		}	
+	}
 	
+	if(count_S == -1)
+	{
+			perror ("read source:");
+			error_checker = 1 ;
+	}	
 	
 	if(close(fd_S) == -1)
 	{
