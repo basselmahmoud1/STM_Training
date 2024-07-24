@@ -22,7 +22,7 @@ void read_usr (void)
 		perror("read:");
 		error_checker = 1;
 	}
-	command [readsize]='\0';
+	command [readsize-1]='\0';
 	
 	*tokens = strtok(command , " ");
 	counter = 0 ;
@@ -85,9 +85,9 @@ void echo (void)
 void cp (void) 
 {
 	char buffer [100] ;
-	char *source_name;
+	char *source_name ;
 	ssize_t count_S , count_T ;
-	int i =0 ;
+	int i =0 , flag = 0 ;
 	
 	int fd_S = open (tokens[1] ,O_RDONLY  );
 	if (fd_S ==-1)
@@ -98,14 +98,17 @@ void cp (void)
 	
 	if( tokens[2][strlen(tokens[2])-1] == '/' )
 	{
-		for( i = tokens[1][strlen(tokens[1])-1]  ; i >= 0 ; i--)
+		for( i = strlen(tokens[1])-1  ; i >= 0 ; i--)
 		{
 			if (tokens[1][i] == '/')
 			{
 				source_name = tokens[1] + i +1 ;
+				flag=1;
 				break;
 			}
 		}
+		if(flag==0)
+			source_name = tokens[1]  ;
 		
 		strcat(tokens[2],source_name);
 	}
