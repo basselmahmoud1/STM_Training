@@ -9,6 +9,7 @@
 #include  <stddef.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 
 
@@ -50,5 +51,11 @@ void pwd (void);
 void echo (void);
 
 void cp (void);
+
+void mv (void);
+
+void exit_usr (void);
+
+void help (void); 
 
 #endif

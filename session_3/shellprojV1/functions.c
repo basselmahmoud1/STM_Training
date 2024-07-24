@@ -5,7 +5,7 @@
 int  counter;
 int error_checker = 0;
 
-const char *shellmsg ="n3m ya 8aly > ";
+const char *shellmsg ="engez mafesh w2t lel tafser $> ";
 
 char *tokens[5];
 char command[1001];
@@ -22,7 +22,10 @@ void read_usr (void)
 		perror("read:");
 		error_checker = 1;
 	}
-	command [readsize-1]='\0';
+	if(readsize>0)
+		command [readsize-1]='\0';
+	else 
+		command [readsize+1]='\0';
 	
 	*tokens = strtok(command , " ");
 	counter = 0 ;
@@ -152,7 +155,114 @@ void cp (void)
 		perror ("close target file:");
 		error_checker = 1;
 	}
+	
+	
 		
+}
+
+
+void mv (void)
+{
+	char buffer [100] ;
+	char *source_name ;
+	ssize_t count_S , count_T ;
+	int i =0 , flag = 0 ;
+	
+	int fd_S = open (tokens[1] ,O_RDONLY  );
+	if (fd_S ==-1)
+	{
+		perror ("open source file:");
+		error_checker = 1;
+	}
+	
+	if( tokens[2][strlen(tokens[2])-1] == '/' )
+	{
+		for( i = strlen(tokens[1])-1  ; i >= 0 ; i--)
+		{
+			if (tokens[1][i] == '/')
+			{
+				source_name = tokens[1] + i +1 ;
+				flag=1;
+				break;
+			}
+		}
+		if(flag==0)
+			source_name = tokens[1]  ;
+		
+		strcat(tokens[2],source_name);
+	}
+	
+	
+	
+	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC , S_IRUSR | S_IWUSR ) ;
+	if (fd_T ==-1)
+	{
+		perror ("creating target file:");
+		error_checker = 1;
+		close(fd_S);
+		return ;
+	}
+	
+	while ( (count_S = read (fd_S , buffer , sizeof(buffer) )) > 0 )
+	{
+		
+		count_T = write (fd_T ,buffer ,count_S );
+		if(count_T == -1)
+		{ 
+			perror ("read source:");
+			error_checker =1 ;
+			break;
+		}	
+	}
+	
+	if (error_checker == 0)
+	{
+		int error_state = remove( tokens[1] );
+		if ( error_state != 0)
+		{
+			perror("remove file:");
+			error_checker = 1;
+		}
+	}
+	
+	if(count_S == -1)
+	{
+			perror ("read source:");
+			error_checker = 1 ;
+	}	
+	
+	if(close(fd_S) == -1)
+	{
+		perror ("close source file:");
+		error_checker = 1;
+	}
+	if(close(fd_T) == -1)
+	{
+		perror ("close target file:");
+		error_checker = 1;
+	}
+}
+
+
+
+void exit_usr (void)
+{
+
+	write_usr("SALAM YA NIGM :( \n",strlen("SALAM YA NIGM :( \n"));
+	exit(0);
+
+	
+}
+
+
+void help (void) 
+{
+	write_usr("supported commands are :\n",strlen("supported commands are :\n"));
+	write_usr("pwd : prints the current working directory\n",strlen("pwd : prints the current working directory\n"));
+	write_usr("echo : print back the string given\n",strlen("echo : print back the string given\n"));
+	write_usr("cp : copy a file given (1st argumment) into the other file (2nd argumment)\n",strlen("cp : copy a file given (1st argumment) into the other file (2nd argumment)\n"));
+	write_usr("mv : move file to another directory\n",strlen("mv : move file to another directory\n"));
+	write_usr("exit : terminates the shell\n",strlen("exit : terminates the shell\n"));
 }
 
 
@@ -160,7 +270,7 @@ void cp (void)
 void perform_comm (void) 
 {
 
-	if(strcmp(tokens[0],"pwd\n")==0)
+	if(strcmp(tokens[0],"pwd")==0)
 	{
 	//	write_usr("pwd is entered\n", strlen("pwd is entered\n") );
 		pwd ();
@@ -168,7 +278,7 @@ void perform_comm (void)
 	
 	if(strcmp(tokens[0],"echo")==0)
 	{
-		write_usr("echo is entered\n", strlen("echo is entered\n") );
+	//	write_usr("echo is entered\n", strlen("echo is entered\n") );
 		echo ();
 	}
 	
@@ -180,20 +290,24 @@ void perform_comm (void)
 	
 	if(strcmp(tokens[0],"mv")==0)
 	{
-		write_usr("mv is entered\n", strlen("mv is entered\n") );
+		//write_usr("mv is entered\n", strlen("mv is entered\n") );
+		mv();
 	}
 	
+	
+	if(strcmp(tokens[0],"exit")==0)
+	{
+		//write_usr("exit is entered\n", strlen("exit is entered\n") );
+		exit_usr();
+	}
 	
 	
 	if(strcmp(tokens[0],"help")==0)
 	{
-		write_usr("help is entered\n", strlen("help is entered\n") );
+		//write_usr("help is entered\n", strlen("help is entered\n") );
+		help();
 	}
 	
-	if(strcmp(tokens[0],"exit")==0)
-	{
-		write_usr("exit is entered\n", strlen("exit is entered\n") );
-	}
 	
 	
 	
