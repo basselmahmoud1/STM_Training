@@ -17,7 +17,7 @@ engez mafesh w2t lel tafser $> help
 supported commands are :
 pwd : prints the current working directory
 echo : print back the string given
-cp : copy a file given (1st argumment) into the other file (2nd argumment)
+cp : copy a file given (1st argument) into the other file (2nd argument)
 mv : move file to another directory
 exit : terminates the shell
 engez mafesh w2t lel tafser $> mv file.text test/
@@ -27,3 +27,25 @@ bassel mahmoud
 engez mafesh w2t lel tafser $> exit
 SALAM YA NIGM :(
 ```
+## SUB commands 
+### CP : -a
+this sub-command is used if you want to append 2 files together in one target file
+``` 
+cp -a (source file path) (target file path)
+```
+#### example 
+```
+cp -a source.txt target.txt
+```
+here the content inside  ( source.txt ) is appended with the ( target.txt ) and saved inside target.txt
+### MV : -f 
+this sub-command is used to force overwrite the target file if it exists with  the same name of source file 
+```
+mv -f ( source file path )  ( target file path )
+```
+
+#### example 
+```
+mv -f source.txt target.txt
+```
+source.txt is moved to target file and force overwrite the target.txt if it exists with the same name  
