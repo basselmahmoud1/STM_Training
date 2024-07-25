@@ -108,13 +108,55 @@ void cp (void)
 			write_usr("Error : missing arrgument\n",strlen("Error : missing arrgument\n"));
 			return;
 		}
-		 fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_APPEND , S_IRUSR | S_IWUSR ) ;
+		
 		 fd_S = open (tokens[2] ,O_RDONLY  );	
+		 
+		 if( tokens[3][strlen(tokens[3])-1] == '/' )
+		{
+			for( i = strlen(tokens[2])-1  ; i >= 0 ; i--)
+			{
+				if (tokens[2][i] == '/')
+				{
+					source_name = tokens[2] + i +1 ;
+					flag=1;
+					break;
+				}
+			}
+			if(flag==0)
+				source_name = tokens[2]  ;
+		
+			strcat(tokens[3],source_name);
+		}
+		
+		fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_APPEND , S_IRUSR | S_IWUSR ) ;
+	
 	}
+	
 	else
 	{
-		 fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR ) ;
+		 
 		 fd_S = open (tokens[1] ,O_RDONLY  );
+		
+		if( tokens[2][strlen(tokens[2])-1] == '/' )
+		{
+			for( i = strlen(tokens[1])-1  ; i >= 0 ; i--)
+			{
+				if (tokens[1][i] == '/')
+				{
+					source_name = tokens[1] + i +1 ;
+					flag=1;
+					break;
+				}
+			}
+		
+			if(flag==0)
+				source_name = tokens[1]  ;
+		
+			strcat(tokens[2],source_name);
+		
+		}
+	
+		fd_T = open ( tokens[2] , O_RDWR|O_CREAT| O_TRUNC |O_EXCL , S_IRUSR | S_IWUSR ) ;
 	}
 	
 	
