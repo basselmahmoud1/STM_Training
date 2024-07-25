@@ -91,15 +91,33 @@ void cp (void)
 	char *source_name ;
 	ssize_t count_S , count_T ;
 	int i =0 , flag = 0 ;
+	int fd_T = 0 ,fd_S = 0; 
 	
 	
-	if(tokens[2]==NULL)
+	
+	if(tokens[2]==NULL || tokens[1] == NULL)
 	{
-		write_usr("Error : missing target file\n",strlen("Error : missing target file\n"));
+		write_usr("Error : missing arrgument\n",strlen("Error : missing arrgument\n"));
 		return;
 	}
 	
-	int fd_S = open (tokens[1] ,O_RDONLY  );
+	if( strcmp(tokens[1],"-a") == 0 )
+	{
+		if(tokens[3]==NULL || tokens[2] == NULL)
+		{
+			write_usr("Error : missing arrgument\n",strlen("Error : missing arrgument\n"));
+			return;
+		}
+		 fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_APPEND , S_IRUSR | S_IWUSR ) ;
+		 fd_S = open (tokens[2] ,O_RDONLY  );	
+	}
+	else
+	{
+		 fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR ) ;
+		 fd_S = open (tokens[1] ,O_RDONLY  );
+	}
+	
+	
 	if (fd_S ==-1)
 	{
 		perror ("open source file:");
@@ -126,7 +144,6 @@ void cp (void)
 	
 	
 	
-	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR ) ;
 	if (fd_T ==-1)
 	{
 		perror ("creating target file:");
@@ -175,16 +192,33 @@ void mv (void)
 	char *source_name ;
 	ssize_t count_S , count_T ;
 	int i =0 , flag = 0 ;
+	int fd_T = 0 ,fd_S = 0;
 	
-	if(tokens[2]==NULL)
+	if(tokens[2]==NULL || tokens[1] == NULL)
 	{
-		write_usr("Error missing target file\n",strlen("Error missing target file\n"));
+		write_usr("Error : missing arrgument\n",strlen("Error : missing arrgument\n"));
 		return;
+	}
+	
+	if( strcmp(tokens[1],"-f") == 0 )
+	{
+		if(tokens[3]==NULL || tokens[2] == NULL)
+		{
+			write_usr("Error : missing arrgument\n",strlen("Error : missing arrgument\n"));
+			return;
+		}
+		 fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_TRUNC , S_IRUSR | S_IWUSR ) ;
+		 fd_S = open (tokens[2] ,O_RDONLY  );	
+	}
+	else
+	{
+		 fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_EXCL , S_IRUSR | S_IWUSR ) ;
+		 fd_S = open (tokens[1] ,O_RDONLY  );
 	}
 	
 	
 	
-	int fd_S = open (tokens[1] ,O_RDONLY  );
+	//int fd_S = open (tokens[1] ,O_RDONLY  );
 	if (fd_S ==-1)
 	{
 		perror ("open source file:");
@@ -212,7 +246,7 @@ void mv (void)
 	
 	
 	
-	int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_EXCL , S_IRUSR | S_IWUSR ) ;
+	//int fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_EXCL , S_IRUSR | S_IWUSR ) ;
 	if (fd_T ==-1)
 	{
 		perror ("creating target file:");
