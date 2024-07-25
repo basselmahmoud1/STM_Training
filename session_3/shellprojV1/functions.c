@@ -192,7 +192,7 @@ void mv (void)
 	char *source_name ;
 	ssize_t count_S , count_T ;
 	int i =0 , flag = 0 ;
-	int fd_T = 0 ,fd_S = 0;
+	int fd_T = 0 ,fd_S = 0 ,error_state = 0;
 	
 	if(tokens[2]==NULL || tokens[1] == NULL)
 	{
@@ -207,13 +207,55 @@ void mv (void)
 			write_usr("Error : missing arrgument\n",strlen("Error : missing arrgument\n"));
 			return;
 		}
-		 fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_TRUNC , S_IRUSR | S_IWUSR ) ;
+		
 		 fd_S = open (tokens[2] ,O_RDONLY  );	
+		 
+		 if( tokens[3][strlen(tokens[3])-1] == '/' )
+		{
+			for( i = strlen(tokens[2])-1  ; i >= 0 ; i--)
+			{
+				if (tokens[2][i] == '/')
+				{
+					source_name = tokens[2] + i +1 ;
+					flag=1;
+					break;
+				}
+			}
+			if(flag==0)
+				source_name = tokens[2]  ;
+		
+			strcat(tokens[3],source_name);
+		}
+		
+		fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_TRUNC , S_IRUSR | S_IWUSR ) ;
+	
 	}
+	
 	else
 	{
-		 fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_EXCL , S_IRUSR | S_IWUSR ) ;
+		 
 		 fd_S = open (tokens[1] ,O_RDONLY  );
+		
+		if( tokens[2][strlen(tokens[2])-1] == '/' )
+		{
+			for( i = strlen(tokens[1])-1  ; i >= 0 ; i--)
+			{
+				if (tokens[1][i] == '/')
+				{
+					source_name = tokens[1] + i +1 ;
+					flag=1;
+					break;
+				}
+			}
+		
+			if(flag==0)
+				source_name = tokens[1]  ;
+		
+			strcat(tokens[2],source_name);
+		
+		}
+	
+		fd_T = open ( tokens[2] , O_RDWR|O_CREAT|O_EXCL , S_IRUSR | S_IWUSR ) ;
 	}
 	
 	
@@ -227,22 +269,6 @@ void mv (void)
 	
 	
 	
-	if( tokens[2][strlen(tokens[2])-1] == '/' )
-	{
-		for( i = strlen(tokens[1])-1  ; i >= 0 ; i--)
-		{
-			if (tokens[1][i] == '/')
-			{
-				source_name = tokens[1] + i +1 ;
-				flag=1;
-				break;
-			}
-		}
-		if(flag==0)
-			source_name = tokens[1]  ;
-		
-		strcat(tokens[2],source_name);
-	}
 	
 	
 	
@@ -267,12 +293,23 @@ void mv (void)
 		}	
 	}
 	
-	
-	int error_state = remove( tokens[1] );
-	if ( error_state != 0)
+	if(strcmp(tokens[1],"-f") != 0 )
 	{
-		perror("remove file:");
-		error_checker = 1;
+		error_state = remove( tokens[1] );
+		if ( error_state != 0)
+		{
+			perror("remove file:");
+			error_checker = 1;
+		}
+	}
+	else
+	{
+		error_state = remove( tokens[2] );
+		if ( error_state != 0)
+		{
+			perror("remove file:");
+			error_checker = 1;
+		}
 	}
 
 	
