@@ -92,6 +92,13 @@ void cp (void)
 	ssize_t count_S , count_T ;
 	int i =0 , flag = 0 ;
 	
+	
+	if(tokens[2]==NULL)
+	{
+		write_usr("Error : missing target file\n",strlen("Error : missing target file\n"));
+		return;
+	}
+	
 	int fd_S = open (tokens[1] ,O_RDONLY  );
 	if (fd_S ==-1)
 	{
@@ -169,12 +176,22 @@ void mv (void)
 	ssize_t count_S , count_T ;
 	int i =0 , flag = 0 ;
 	
+	if(tokens[2]==NULL)
+	{
+		write_usr("Error missing target file\n",strlen("Error missing target file\n"));
+		return;
+	}
+	
+	
+	
 	int fd_S = open (tokens[1] ,O_RDONLY  );
 	if (fd_S ==-1)
 	{
 		perror ("open source file:");
 		error_checker = 1;
 	}
+	
+	
 	
 	if( tokens[2][strlen(tokens[2])-1] == '/' )
 	{
