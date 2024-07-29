@@ -232,6 +232,7 @@ void mv (void)
 {
 	char buffer [100] ;
 	char *source_name ;
+	//char *target_name ;
 	ssize_t count_S , count_T ;
 	int i =0 , flag = 0 ;
 	int fd_T = 0 ,fd_S = 0 ,error_state = 0;
@@ -250,11 +251,13 @@ void mv (void)
 			return;
 		}
 		
+		
+		
 		 fd_S = open (tokens[2] ,O_RDONLY  );	
-		 
-		 if( tokens[3][strlen(tokens[3])-1] == '/' )
-		{
-			for( i = strlen(tokens[2])-1  ; i >= 0 ; i--)
+		
+		// getting source name 
+		
+		for( i = strlen(tokens[2])-1  ; i >= 0 ; i--)
 			{
 				if (tokens[2][i] == '/')
 				{
@@ -263,13 +266,20 @@ void mv (void)
 					break;
 				}
 			}
-			if(flag==0)
+		if(flag==0)
 				source_name = tokens[2]  ;
 		
+		 
+		 if( tokens[3][strlen(tokens[3])-1] == '/' )
+		{
+			
 			strcat(tokens[3],source_name);
 		}
 		
 		fd_T = open ( tokens[3] , O_RDWR|O_CREAT| O_TRUNC , S_IRUSR | S_IWUSR ) ;
+		
+		
+		
 	
 	}
 	
@@ -353,8 +363,10 @@ void mv (void)
 			error_checker = 1;
 		}
 	}
-
-	
+			
+			
+			
+			
 	if(count_S == -1)
 	{
 			perror ("read source:");
@@ -436,6 +448,10 @@ void perform_comm (void)
 	{
 		//write_usr("help is entered\n", strlen("help is entered\n") );
 		help();
+	}
+	else if(strcmp(tokens[0],"\n")==0)
+	{
+		return;
 	}
 	else
 	{
