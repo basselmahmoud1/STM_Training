@@ -18,15 +18,23 @@
 #define STDERR 		2
 #define PATH_MAX	4096 
 #define MAX_TOKENS	5
- 
+# define COMM_SIZE 1001
 extern const char *shellmsg ;
 
-extern char *tokens[5];
-extern char command[1001];
+
+extern char command[COMM_SIZE];
 
 
 
 extern int  counter;
 extern int error_checker ;
+
+void read_usr (void);
+int get_tokens_num (const char * buff );
+char ** get_tokens (const char * buff );
+void write_usr ( const char *buffer , size_t count);
+
+
+
 
 #endif
