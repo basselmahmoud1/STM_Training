@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include "functions.h"
 
 void perform_builtin(int argc,char **argv);
 
