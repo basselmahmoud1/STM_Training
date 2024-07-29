@@ -10,11 +10,14 @@ int main(void) {
         read_usr();
         argc = get_tokens_num(command);
         argv = get_tokens(command);
-        int i=0;
-        for(i=0 ; i<argc ; i++) {
-            printf("%s ",argv[i]);
-        }
-      //      printf("\n");
+        
+        // check if it is  external
+        //  check if builtin function
+        perform_builtin(argc,argv);
+        // nethier generate un supported func
+        
+        
+        
         for(i=0 ; i<argc && argv[i] != NULL ; i++)
             free (argv[i]);
         free (argv);
