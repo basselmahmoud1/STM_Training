@@ -42,9 +42,4 @@ void perform_EXT (int argc,char** argv)
 		error_checker = 1 ;
 		return;
 	}
-		
-	
-		
-	
-	
 }
