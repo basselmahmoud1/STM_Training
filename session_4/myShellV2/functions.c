@@ -103,7 +103,7 @@ int type (int argc ,char ** argv)
 	char * path = getenv("PATH");
 	char * path_cpy = strdup(path);
 	char * token = strtok(path_cpy,":");
-	char * modified_path =token ;
+	char  modified_path [PATH_MAX]  ;
 	struct stat st ;
 	while (token != NULL)
 	{
@@ -111,17 +111,17 @@ int type (int argc ,char ** argv)
 		strcat (modified_path,"/");
 		strcat	(modified_path,argv[0]);
 
-		int x = stat(token,&st);
-		if((st.st_mode & S_IXUSR) && (x == 0 ) )
+
+		if((st.st_mode & S_IXUSR) && (stat(token,&st) == 0 ) )
 		{
-			free (path);
+			free (path_cpy);
 			return EXTERNAL ;
 		}
 
 		token = strtok(NULL,":");
 
 	}
-	free (path);
+	free (path_cpy);
 
 	return UN_SUPP ;
 
