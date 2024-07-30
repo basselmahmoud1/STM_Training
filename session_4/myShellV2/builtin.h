@@ -17,7 +17,7 @@
 #define PATH_MAX	4096 
 
 extern char ** environ;
-extern process history[10] ;
+//extern process history[10] ;
 
 void perform_builtin(int argc,char **argv);
 

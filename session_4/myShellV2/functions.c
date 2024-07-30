@@ -91,7 +91,7 @@ int type (int argc ,char * argss)
 {
 	if (argc < 1)
 		return 3 ;
-	char * supp_comm [] = {"cd","mycp","echo","exit","help","mymv","mypwd","type","envir",NULL} ;
+	char * supp_comm [] = {"cd","mycp","echo","exit","help","mymv","mypwd","type","envir","myps",NULL} ;
 	int counter ;
 	for(counter = 0 ; supp_comm[counter] != NULL ; counter++ )
 	{

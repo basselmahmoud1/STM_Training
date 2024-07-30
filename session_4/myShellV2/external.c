@@ -4,23 +4,23 @@ extern int error_checker ;
 
 int process_count ;
 
-extern process history[10] ;
+process history [10] ;
 
 void addProcessToHistory (pid_t CPID , char* p_name ,  int state ,char ** argv )
 {
 	char * carry ;
 	if (state > 0)
 	{
-		carry = "EXIT NORMALLY";
+		carry = strdup("EXIT NORMALLY");
 	}
 	else if (state == 0)
 	{
-		carry = "process EXIT ABNORMAL";
+		carry = strdup("process EXIT ABNORMAL");
 	}
 	
 	if (process_count < 10 )
 	{
-		history[process_count].name = argv[0];
+		history[process_count].name = strdup(p_name);
 		history[process_count].PID = CPID;
 		history[process_count].exit_status = carry ;
 	}
@@ -28,8 +28,12 @@ void addProcessToHistory (pid_t CPID , char* p_name ,  int state ,char ** argv )
 	{
 		int i;
 		for(i = 1 ; i < 10 ; i++ )
+		{
+			free(history[i-1].name);
+			free(history[i-1].exit_status);
 			history[i-1] = history [i] ;
-		history[9].name = argv[0];
+		}
+		history[9].name = strdup(p_name);
 		history[9].PID = CPID;
 		history[9].exit_status = carry ;
 	}
@@ -56,8 +60,9 @@ void perform_EXT (int argc,char** argv)
 			error_checker = 1 ;
 			return;
 		}
+		char *carry = strdup(argv[0]);
 		
-		addProcessToHistory( CPID , argv[0] , WIFEXITED(state) ,argv);
+		addProcessToHistory( CPID , carry , WIFEXITED(state) ,argv);
 					
 	}
 	
@@ -71,8 +76,9 @@ void perform_EXT (int argc,char** argv)
 		{
 			perror("execution");
 			error_checker = 1 ;
-			return;
+			exit(0);
 		}
+		
 		
 	}
 	else 

@@ -1,7 +1,7 @@
 #include "builtin.h"
 
-extern process history [10];
-extern int process_count ;
+//extern process history [10];
+//extern int process_count ;
 
 void perform_builtin(int argc,char **argv)
 {
@@ -35,6 +35,7 @@ void perform_builtin(int argc,char **argv)
 		}
 		else if(strcmp(argv[0],"myps")==0)
 		{
+		//	write_usr((myps),strlen("myps"));
 			ps(history);
 		}
 		else if(strcmp(argv[0],"type")==0)
@@ -561,23 +562,29 @@ void ps (const process *history )
 {
 	int i  ;
 	char* arr[] = {"1","2","3","4","5","6","7","8","9","10"};  
-	char * carry ;
+	char * carry = malloc (20);
+	if (process_count==0)
+		write_usr("no process yet \n",strlen("no process yet \n"));
 	for ( i = 0 ; i < process_count && i < 10 ; i++ )
 	{
-		write_usr("process",strlen("process"));
+		write_usr("process ",strlen("process "));
 		write_usr(arr[i],strlen(arr[i]));
 		write_usr("\n",strlen("\n"));
+		
 		sprintf(carry,"%d",history[i].PID);
-		write_usr("ID:",strlen("ID:"));
+		write_usr("ID: ",strlen("ID: "));
 		write_usr( carry ,strlen( carry ) );
 		write_usr("\n",strlen("\n"));
-		write_usr("name:",strlen("name:"));
-		write_usr(history[i].name ,strlen( history->name ) ) ;
+		
+		write_usr("name: ",strlen("name: "));
+		write_usr(history[i].name ,10 ) ;
 		write_usr("\n",strlen("\n"));
-		write_usr("exit status:",strlen("exit status:"));
+		
+		write_usr("exit status: ",strlen("exit status: "));
 		write_usr(history[i].exit_status, strlen( history->exit_status) ) ;
 		write_usr("\n",strlen("\n"));
 	}
+	free(carry);
 }
 
 

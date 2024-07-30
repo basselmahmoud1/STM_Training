@@ -22,7 +22,7 @@ char * exit_status ;
 }process;
 
 
-process history [10] ;
+extern process history [10] ;
 extern int process_count ;
 extern int error_checker ;
 
