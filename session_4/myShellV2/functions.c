@@ -1,7 +1,7 @@
 #include "functions.h"
 
 
-int  counter;
+
 int error_checker = 0;
 int argc ;
 char ** argv ;
@@ -48,8 +48,17 @@ char ** get_tokens (const char * buff )
     int counter =0;
     char cp [COMM_SIZE] ;
     char ** argg;
+
     strcpy(cp,buff);
-    argg = malloc(argc * sizeof(char*)) ;
+
+    argg = malloc((argc+1) * sizeof(char*)) ;
+    if (argg == NULL) {
+        perror("malloc");
+        argc=0;
+        return NULL ;
+    }
+
+
     char *token  = strtok( cp , " " );
     while (token != NULL )
     {
@@ -57,6 +66,8 @@ char ** get_tokens (const char * buff )
         token = strtok( NULL , " " );
         counter++;
     }
+
+    argg[counter] = NULL ;
     return argg;
 
 }
