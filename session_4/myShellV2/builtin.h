@@ -20,7 +20,14 @@ void help (int argc,char **argv);
 
 void echo (int argc , char **argv);
 
-void pwd (int argc ,char **argv );
+char * pwd (int argc ,char **argv );
 
+void exit_usr (void);
+
+void cp (int argc , char ** argv);
+
+void mv (int argc , char ** argv);
+
+char * cd (int argc , char ** argv);
 
 #endif
