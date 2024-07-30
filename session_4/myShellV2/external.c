@@ -60,9 +60,9 @@ void perform_EXT (int argc,char** argv)
 			error_checker = 1 ;
 			return;
 		}
-		char *carry = strdup(argv[0]);
 		
-		addProcessToHistory( CPID , carry , WIFEXITED(state) ,argv);
+		
+		addProcessToHistory( CPID , argv[0] , WIFEXITED(state) ,argv);
 					
 	}
 	

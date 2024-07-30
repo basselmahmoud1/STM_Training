@@ -26,11 +26,10 @@ int main(void) {
         }
         switch (type(argc,argv[0]))
         {
-        // check if it is  external (if true dont enter builtin perform func)
       		case EXTERNAL :	perform_EXT(argc,argv); 	break;
-        //check if builtin function
+        
         	case INTERNAL :	perform_builtin(argc,argv);	break;
-        // nethier generate un supported func
+        
         	case UN_SUPP : write_usr("unsupported command\n",strlen("unsupported command\n"));
         }
         

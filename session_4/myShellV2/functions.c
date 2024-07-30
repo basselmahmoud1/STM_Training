@@ -7,7 +7,7 @@ int argc ;
 char ** argv ;
 char  command[COMM_SIZE];
 
-const char *shellmsg ="engez mafesh w2t lel tafser $> ";
+const char *shellmsg ="\033[1;36mEngez Mafesh W2t Lel Tafser $> \033[m";
 
 
 void read_usr (void)
