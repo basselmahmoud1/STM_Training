@@ -31,19 +31,24 @@ void perform_builtin(int argc,char **argv)
 		{
 			help(argc,argv);
 		}
-		else if(strcmp(argv[1],"type")==0)
+		else if(strcmp(argv[0],"type")==0)
 		{
 			switch (type(argc,argv[1]))
 			{
 			// check if it is  external (if true dont enter builtin perform func)
-		      		case EXTERNAL :	write_usr("External command\n",strlen("unsupported command\n")); 	break;
+		      		case EXTERNAL :	write_usr("External command\n",strlen("External command\n")); 	break;
 			//check if builtin function
-				case INTERNAL :	write_usr("Internal command\n",strlen("unsupported command\n"));	break;
+				case INTERNAL :	write_usr("Internal command\n",strlen("Internal command\n"));	break;
 			// nethier generate un supported func
-				case UN_SUPP : write_usr("unsupported command\n",strlen("unsupported command\n"));
+				case UN_SUPP : write_usr("command isnt supported\n", strlen("command isnt supported\n") ); break;
 			}
 					
 		}
+		else if(strcmp(argv[0],"envir")==0)
+		{
+			envir();
+		}
+		
 		else if (strcmp(argv[0],"cd")==0)
 		{
 			char * carry = cd (argc,argv);
@@ -80,10 +85,14 @@ void help (int argc,char **argv)
 		write_usr("mv : move file to another directory\n",strlen("mv : move file to another directory\n"));
 	else if (strcmp(argv[1],"exit")==0)
 		write_usr("exit : terminates the shell\n",strlen("exit : terminates the shell\n"));
+	else if (strcmp(argv[1],"type")==0)
+		write_usr("type : gives you the type of command\nExternal\nInternal\nunsupported\n",strlen("type : gives you the type of command\nExternal\nInternal\nunsupported\n"));
 	else if (strcmp(argv[1],"help")==0)
 		write_usr("supported builtin commands are:\nhelp\nexit\nmv\npwd\necho\ncp\n",strlen("supported builtin commands are:\nhelp\nexit\nmv\npwd\necho\ncp\n"));
 	else if (strcmp(argv[1],"cd")==0)
 		write_usr("cd : change working directory\n",strlen("cd : change working directory\n"));
+	else if (strcmp(argv[1],"envir")==0)
+		write_usr("envir : print all environment variables\n",strlen("envir : print all environment variables\n"));
 }
 
 
@@ -505,6 +514,18 @@ char * cd (int argc , char ** argv)
 	return carry ;
 
 	
+}
+
+
+void envir (void) 
+{
+	int i=0;
+	while ( (environ[i]!=NULL) )
+	{
+		write_usr(environ[i],strlen(environ[i]));
+		write_usr("\n",strlen("\n"));
+		i++;
+	}
 }
 
 

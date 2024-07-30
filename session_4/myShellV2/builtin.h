@@ -12,13 +12,19 @@
 #include <stdlib.h>
 #include "functions.h"
 
+
 #define PATH_MAX	4096 
+
+extern char ** environ;
+
 
 void perform_builtin(int argc,char **argv);
 
 void help (int argc,char **argv);
 
 void echo (int argc , char **argv);
+
+extern int type (int argc , char*argv);
 
 char * pwd (int argc ,char **argv );
 
@@ -29,5 +35,7 @@ void cp (int argc , char ** argv);
 void mv (int argc , char ** argv);
 
 char * cd (int argc , char ** argv);
+
+void envir (void) ;
 
 #endif

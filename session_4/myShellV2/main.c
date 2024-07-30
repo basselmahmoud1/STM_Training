@@ -17,6 +17,8 @@ int main(void) {
         read_usr();
         argc = get_tokens_num(command);
         argv = get_tokens(command);
+        if (argc == 0)
+        	continue ;
         
         switch (type(argc,argv[0]))
         {
