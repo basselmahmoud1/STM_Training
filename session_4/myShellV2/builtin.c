@@ -529,7 +529,24 @@ void envir (void)
 }
 
 
-
+void env_var ( int argc , char ** argv )
+{
+	int len = strlen(argv[0]);
+	int i ;
+	char *arr ;
+	arr = strdup(argv[0]);
+	
+	for(i=0 ; i < len ; i++)
+	{
+		if(arr[0] !=  '\0')
+		arr[i] = arr[i+1];
+	}
+	arr[i-1] ='\0'; 
+	//write_usr(arr,strlen(arr));
+	char *value = getenv(arr);
+	write_usr(value,strlen(value));
+	write_usr("\n",strlen("\n"));
+}
 
 
 

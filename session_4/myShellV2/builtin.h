@@ -38,4 +38,6 @@ char * cd (int argc , char ** argv);
 
 void envir (void) ;
 
+void env_var ( int argc , char ** argv );
+
 #endif

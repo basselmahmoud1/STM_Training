@@ -19,7 +19,11 @@ int main(void) {
         argv = get_tokens(command);
         if (argc == 0)
         	continue ;
-        
+        if (argv[0][0]=='$')
+        {
+        	env_var(argc,argv);
+        	continue;
+        }
         switch (type(argc,argv[0]))
         {
         // check if it is  external (if true dont enter builtin perform func)
