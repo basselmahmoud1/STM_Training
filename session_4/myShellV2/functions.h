@@ -16,8 +16,6 @@
 #define STDIN  		0
 #define STDOUT 		1
 #define STDERR 		2
-#define PATH_MAX	4096 
-#define MAX_TOKENS	5
 # define COMM_SIZE 1001
 extern const char *shellmsg ;
 
