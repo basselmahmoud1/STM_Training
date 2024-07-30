@@ -2,7 +2,7 @@
 
 
 void perform_builtin(int argc,char **argv)
-{	
+{
 	if (argc != 0)
 	{
 		if(strcmp(argv[0],"pwd")==0)
@@ -10,7 +10,7 @@ void perform_builtin(int argc,char **argv)
 			pwd (argc,argv);
 		}
 		else if(strcmp(argv[0],"echo")==0)
-		{			
+		{
 			echo (argc,argv);
 		}
 		else if(strcmp(argv[0],"cp")==0)
@@ -35,14 +35,14 @@ void perform_builtin(int argc,char **argv)
 		else
 		{
 			write_usr("command isnt supported\n", strlen("command isnt supported\n") );
-		
+
 		}
-		
-		
-		
+
+
+
 	}
-	
-	else 
+
+	else
 		return ;
 
 }
@@ -50,7 +50,7 @@ void perform_builtin(int argc,char **argv)
 
 void help (int argc,char **argv)
 {
-	if (argc == 1 ) 
+	if (argc == 1 )
 		write_usr("help command dispaly explaination of each command\n", strlen("help command dispaly explaination of each command\n") );
 	else if (strcmp(argv[1],"cp")==0)
 		write_usr("cp : copy a file given (1st argumment) into the other file (2nd argumment)\n",strlen("cp : 					copy a file given (1st argumment) into the other file (2nd argumment)\n"));
@@ -71,8 +71,13 @@ void help (int argc,char **argv)
 
 void echo (int argc , char **argv)
 {
-	counter = 1 ;
-	
+	int counter = 1 ;
+
+	if (argc < 2) {
+		write_usr("\n", strlen("\n"));
+		return;
+	}
+
 	while ( argv[counter] != NULL )
 	{
 		write_usr( argv[counter] , strlen( argv[counter] ) );
@@ -80,36 +85,23 @@ void echo (int argc , char **argv)
 		counter++;
 	}
 	write_usr("\n", strlen("\n") );
-}	
+}
 
 
 void pwd (int argc ,char **argv )
 {
-	
+
 	char *error_state;
 	char CWD [PATH_MAX];
 	error_state = getcwd ( CWD , PATH_MAX );
-	
+
 	if(error_state == NULL)
 	{
 		perror("pwd:");
 		error_checker = 1 ;
 	}
-	
+
 	//write_usr("\n", strlen("\n") );
 	write_usr( CWD , strlen(CWD) ) ;
 	write_usr("\n", strlen("\n") );
 }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
