@@ -98,33 +98,37 @@ int type (int argc ,char ** argv)
 		if(strcmp(supp_comm[counter],argv[0])==0)
 			return INTERNAL;
 	}
-	 
+
 	// a3mel tokens w e3mel strcat leeh esm el program m3 kol token weeh cheak lw kan mogood wala laa
 	char * path = getenv("PATH");
-	char * token = strtok(path,":");
+	char * path_cpy = strdup(path);
+	char * token = strtok(path_cpy,":");
+	char * modified_path =token ;
 	struct stat st ;
 	while (token != NULL)
 	{
-		strcat(token,argv[0]);
+		strcpy (modified_path,token);
+		strcat (modified_path,"/");
+		strcat	(modified_path,argv[0]);
+
 		int x = stat(token,&st);
 		if((st.st_mode & S_IXUSR) && (x == 0 ) )
 		{
 			free (path);
 			return EXTERNAL ;
 		}
-		
+
 		token = strtok(NULL,":");
-		
+
 	}
 	free (path);
-	
+
 	return UN_SUPP ;
-	
-	
+
+
 
 
 
 
 
 }
-
