@@ -11,12 +11,13 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include "functions.h"
+#include "external.h"
 
 
 #define PATH_MAX	4096 
 
 extern char ** environ;
-
+extern process history[10] ;
 
 void perform_builtin(int argc,char **argv);
 
@@ -39,5 +40,7 @@ char * cd (int argc , char ** argv);
 void envir (void) ;
 
 void env_var ( int argc , char ** argv );
+
+void ps (const process *history );
 
 #endif

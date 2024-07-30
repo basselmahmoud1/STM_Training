@@ -15,11 +15,21 @@
 #include <sys/wait.h>
 #include "functions.h"
 
+typedef struct{
+pid_t PID;
+char * name ;
+char * exit_status ;
+}process;
 
+
+process history [10] ;
+extern int process_count ;
 extern int error_checker ;
 
 
 void perform_EXT (int argc,char** argv);
+
+void addProcessToHistory (pid_t CPID , char* p_name ,  int state ,char ** argv );
 
 
 

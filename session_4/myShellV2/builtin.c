@@ -1,5 +1,7 @@
 #include "builtin.h"
 
+extern process history [10];
+extern int process_count ;
 
 void perform_builtin(int argc,char **argv)
 {
@@ -30,6 +32,10 @@ void perform_builtin(int argc,char **argv)
 		else if(strcmp(argv[0],"help")==0)
 		{
 			help(argc,argv);
+		}
+		else if(strcmp(argv[0],"myps")==0)
+		{
+			ps(history);
 		}
 		else if(strcmp(argv[0],"type")==0)
 		{
@@ -93,6 +99,8 @@ void help (int argc,char **argv)
 		write_usr("cd : change working directory\n",strlen("cd : change working directory\n"));
 	else if (strcmp(argv[1],"envir")==0)
 		write_usr("envir : print all environment variables\n",strlen("envir : print all environment variables\n"));
+	else if (strcmp(argv[1],"myps")==0)
+		write_usr("myps : print last 10 processes\n",strlen("myps : print last 10 processes\n"));
 }
 
 
@@ -549,7 +557,28 @@ void env_var ( int argc , char ** argv )
 }
 
 
-
+void ps (const process *history )
+{
+	int i  ;
+	char* arr[] = {"1","2","3","4","5","6","7","8","9","10"};  
+	char * carry ;
+	for ( i = 0 ; i < process_count && i < 10 ; i++ )
+	{
+		write_usr("process",strlen("process"));
+		write_usr(arr[i],strlen(arr[i]));
+		write_usr("\n",strlen("\n"));
+		sprintf(carry,"%d",history[i].PID);
+		write_usr("ID:",strlen("ID:"));
+		write_usr( carry ,strlen( carry ) );
+		write_usr("\n",strlen("\n"));
+		write_usr("name:",strlen("name:"));
+		write_usr(history[i].name ,strlen( history->name ) ) ;
+		write_usr("\n",strlen("\n"));
+		write_usr("exit status:",strlen("exit status:"));
+		write_usr(history[i].exit_status, strlen( history->exit_status) ) ;
+		write_usr("\n",strlen("\n"));
+	}
+}
 
 
 
