@@ -10,13 +10,16 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
-
+#include <sys/stat.h>
 
 
 #define STDIN  		0
 #define STDOUT 		1
 #define STDERR 		2
-# define COMM_SIZE 1001
+#define COMM_SIZE 	1001
+#define EXTERNAL 	0
+#define INTERNAL	1
+#define UN_SUPP		-1
 extern const char *shellmsg ;
 
 
@@ -31,6 +34,7 @@ void read_usr (void);
 int get_tokens_num (const char * buff );
 char ** get_tokens (const char * buff );
 void write_usr ( const char *buffer , size_t count);
+int type (int argc ,char ** argv);
 
 
 

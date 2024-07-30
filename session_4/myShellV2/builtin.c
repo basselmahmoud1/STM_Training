@@ -5,7 +5,7 @@ void perform_builtin(int argc,char **argv)
 {
 	if (argc != 0)
 	{
-		if(strcmp(argv[0],"pwd")==0)
+		if(strcmp(argv[0],"mypwd")==0)
 		{
 			char * carry =pwd (argc,argv);
 			write_usr( carry , strlen(carry) ) ;
@@ -61,7 +61,7 @@ void help (int argc,char **argv)
 		write_usr("cp : copy a file given (1st argumment) into the other file (2nd argumment)\n",strlen("cp : 					copy a file given (1st argumment) into the other file (2nd argumment)\n"));
 	else if (strcmp(argv[1],"echo")==0)
 		write_usr("echo : print back the string given\n",strlen("echo : print back the string given\n"));
-	else if (strcmp(argv[1],"pwd")==0)
+	else if (strcmp(argv[1],"mypwd")==0)
 		write_usr("pwd : prints the current working directory\n",strlen("pwd : prints the current working directory\n"));
 	else if (strcmp(argv[1],"mymv")==0)
 		write_usr("mv : move file to another directory\n",strlen("mv : move file to another directory\n"));
@@ -493,6 +493,8 @@ char * cd (int argc , char ** argv)
 
 	
 }
+
+
 
 
 
