@@ -87,7 +87,7 @@ void write_usr ( const char *buffer , size_t count)
 }
 
 
-int type (int argc ,char ** argv)
+int type (int argc ,char * argss)
 {
 	if (argc < 1)
 		return 3 ;
@@ -95,7 +95,7 @@ int type (int argc ,char ** argv)
 	int counter ;
 	for(counter = 0 ; supp_comm[counter] != NULL ; counter++ )
 	{
-		if(strcmp(supp_comm[counter],argv[0])==0)
+		if(strcmp(supp_comm[counter],argss)==0)
 			return INTERNAL;
 	}
 
@@ -109,10 +109,10 @@ int type (int argc ,char ** argv)
 	{
 		strcpy (modified_path,token);
 		strcat (modified_path,"/");
-		strcat	(modified_path,argv[0]);
+		strcat	(modified_path,argss);
 
 
-		if((st.st_mode & S_IXUSR) && (stat(token,&st) == 0 ) )
+		if((stat(modified_path,&st) == 0 ) && (st.st_mode & S_IXUSR)   )
 		{
 			free (path_cpy);
 			return EXTERNAL ;

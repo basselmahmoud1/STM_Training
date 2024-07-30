@@ -20,6 +20,7 @@
 #define EXTERNAL 	0
 #define INTERNAL	1
 #define UN_SUPP		-1
+#define PATH_MAX	4096 
 extern const char *shellmsg ;
 
 
@@ -34,7 +35,7 @@ void read_usr (void);
 int get_tokens_num (const char * buff );
 char ** get_tokens (const char * buff );
 void write_usr ( const char *buffer , size_t count);
-int type (int argc ,char ** argv);
+int type (int argc ,char * argss);
 
 
 

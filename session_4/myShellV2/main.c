@@ -18,7 +18,7 @@ int main(void) {
         argc = get_tokens_num(command);
         argv = get_tokens(command);
         
-        switch (type(argc,argv))
+        switch (type(argc,argv[0]))
         {
         // check if it is  external (if true dont enter builtin perform func)
       		case EXTERNAL :	perform_EXT(argc,argv); 	break;

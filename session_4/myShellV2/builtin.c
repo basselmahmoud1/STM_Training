@@ -31,6 +31,19 @@ void perform_builtin(int argc,char **argv)
 		{
 			help(argc,argv);
 		}
+		else if(strcmp(argv[1],"type")==0)
+		{
+			switch (type(argc,argv[1]))
+			{
+			// check if it is  external (if true dont enter builtin perform func)
+		      		case EXTERNAL :	write_usr("External command\n",strlen("unsupported command\n")); 	break;
+			//check if builtin function
+				case INTERNAL :	write_usr("Internal command\n",strlen("unsupported command\n"));	break;
+			// nethier generate un supported func
+				case UN_SUPP : write_usr("unsupported command\n",strlen("unsupported command\n"));
+			}
+					
+		}
 		else if (strcmp(argv[0],"cd")==0)
 		{
 			char * carry = cd (argc,argv);
