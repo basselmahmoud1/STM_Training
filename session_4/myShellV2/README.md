@@ -26,7 +26,8 @@ This is a full shell implementation in C that supports basic built-in commands a
  
   <img src ="https://github.com/user-attachments/assets/39cbc420-8492-48b7-b411-366a66e5c80e"  width = 700 > 
 - **Cool Colored promote message** 
-   <img src ="https://github.com/user-attachments/assets/9b4ead89-6c89-41fc-ace0-78464955593c"  width = 700 > 
+
+   <img src ="https://github.com/user-attachments/assets/9b4ead89-6c89-41fc-ace0-78464955593c"  width = 1000 > 
   
 
 ## How It Works
