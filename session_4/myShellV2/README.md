@@ -105,9 +105,14 @@ cat < input.txt
 ### 3. Job Control
 Implement job control features such as running processes in the background, bringing them to the foreground, and listing running jobs.
 
+
+
 #### Example:
 ```sh
 sleep 100 &
 jobs
 fg %1
 ```
+
+## Linkedin profile
+[**Linkedin**](https://www.linkedin.com/in/bassel-mahmoud-ahmed-3079ab276/)
