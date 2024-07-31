@@ -1,6 +1,6 @@
-# Simple Shell
+# Full Shell
 
-This is a simple shell implementation in C that supports basic built-in commands and external commands. The shell can execute commands like `cd`, `echo`, `exit`, `help`, `mv`, `pwd`, `type`, and `envir`.
+This is a full shell implementation in C that supports basic built-in commands and external commands. The shell can execute commands like `cd`, `echo`, `exit`, `help`, `mv`, `pwd`, `type`, and `envir`.
 
 ## Features
 
