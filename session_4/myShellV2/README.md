@@ -1,6 +1,6 @@
-# Simple Shell
+# Full Shell
 
-This is a simple shell implementation in C that supports basic built-in commands and external commands. The shell can execute commands like `cd`, `echo`, `exit`, `help`, `mv`, `pwd`, `type`, and `envir`.
+This is a full shell implementation in C that supports basic built-in commands and external commands. The shell can execute commands like `cd`, `echo`, `exit`, `help`, `mv`, `pwd`, `type`, and `envir`.
 
 ## Features
 
@@ -26,7 +26,8 @@ This is a simple shell implementation in C that supports basic built-in commands
  
   <img src ="https://github.com/user-attachments/assets/39cbc420-8492-48b7-b411-366a66e5c80e"  width = 700 > 
 - **Cool Colored promote message** 
-   <img src ="https://github.com/user-attachments/assets/9b4ead89-6c89-41fc-ace0-78464955593c"  width = 700 > 
+
+   <img src ="https://github.com/user-attachments/assets/9b4ead89-6c89-41fc-ace0-78464955593c"  width = 1000 > 
   
 
 ## How It Works
@@ -105,9 +106,14 @@ cat < input.txt
 ### 3. Job Control
 Implement job control features such as running processes in the background, bringing them to the foreground, and listing running jobs.
 
+
+
 #### Example:
 ```sh
 sleep 100 &
 jobs
 fg %1
 ```
+
+## Linkedin profile
+[**Linkedin**](https://www.linkedin.com/in/bassel-mahmoud-ahmed-3079ab276/)
