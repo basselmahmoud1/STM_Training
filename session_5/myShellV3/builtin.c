@@ -3,8 +3,12 @@
 //extern process history [10];
 //extern int process_count ;
 
-void perform_builtin(int argc,char **argv)
+
+
+void perform_builtin(int argc,char** argv,operant op , int loc)
 {
+
+	
 	if (argc != 0)
 	{
 		if(strcmp(argv[0],"mypwd")==0)

@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include "functions.h"
+//#include "builtin.h"
 
 typedef struct{
 pid_t PID;
@@ -22,12 +23,21 @@ char * exit_status ;
 }process;
 
 
+typedef enum 
+{
+	noop,
+	pipe_p,
+	redir,
+	
+}operant;
+
+
 extern process history [10] ;
 extern int process_count ;
 extern int error_checker ;
 
 
-void perform_EXT (int argc,char** argv);
+void perform_EXT (int argc,char** argv,operant op , int loc);
 
 void addProcessToHistory (pid_t CPID , char* p_name ,  int state ,char ** argv );
 
