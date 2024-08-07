@@ -124,10 +124,105 @@ int type (int argc ,char * argss)
 
 	return UN_SUPP ;
 
-
-
-
-
-
-
 }
+
+
+
+
+
+void redirections (int argc , char ** argv )
+{
+	int i , fd_out , fd_in ,fd_err ,fd_both;
+	for( i = 0 ; i < argc ; i++)
+	{
+		if( strcmp(argv[i],">") == 0 )
+		{
+			fd_out = open (argv[i+1] , O_CREAT|O_TRUNC|O_WRONLY,S_IRUSR | S_IWUSR);
+			if (fd_out == -1 )
+			{
+				perror("fd_out:");
+				error_checker=1;
+				return;
+			}
+			dup2(fd_out,STDOUT);
+			close (fd_out);
+			argv[i] = '\0';
+		}
+		
+		else if (strcmp(argv[i],"<") == 0)
+		{
+			fd_in = open (argv[i+1] , O_RDONLY );
+			if (fd_in == -1 )
+			{
+				perror("fd_in:");
+				error_checker=1;
+				return;
+			}
+			dup2(fd_in,STDIN);
+			close (fd_in);
+			argv[i] = '\0';
+		
+		}
+		
+		else if (strcmp(argv[i],"2>") == 0)
+		{
+			fd_err = open (argv[i+1] ,O_CREAT|O_TRUNC|O_WRONLY,S_IRUSR | S_IWUSR );
+			if (fd_err == -1 )
+			{
+				perror("fd_err:");
+				error_checker=1;
+				return;
+			}
+			dup2(fd_err,STDERR);
+			close (fd_err);
+			argv[i] = '\0';
+		}
+	
+		else if ( strcmp(argv[i],"2>&1") == 0 )
+		{
+			dup2 (STDOUT , STDERR);
+			argv[i] = '\0';
+		}
+		
+	
+	
+	
+	}	
+}
+
+void env_var ( int argc , char ** argv,int loc )
+{
+	int len = strlen(argv[loc]);
+	int i ;
+	char *arr ;
+	arr = strdup(argv[loc]);
+	
+	for(i=0 ; i < len ; i++)
+	{
+		if(arr[0] !=  '\0')
+		arr[i] = arr[i+1];
+	}
+	arr[i-1] ='\0'; 
+	//write_usr(arr,strlen(arr));
+	char *value = getenv(arr);
+	write_usr(value,strlen(value));
+	write_usr("\n",strlen("\n"));
+}
+
+
+
+void set_env_var(int argc,char ** argv)
+{
+	int error = setenv(argv[0],argv[2],1);
+	if (error == -1)
+	{
+		perror("setenv :");
+		error_checker=1;
+		return;
+	}
+	
+}
+
+
+
+

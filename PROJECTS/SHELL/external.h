@@ -27,7 +27,8 @@ typedef enum
 {
 	noop,
 	pipe_p,
-	redir,
+	envir_var,
+	deref,
 	
 }operant;
 
@@ -40,6 +41,8 @@ extern int error_checker ;
 void perform_EXT (int argc,char** argv,operant op , int loc);
 
 void addProcessToHistory (pid_t CPID , char* p_name ,  int state ,char ** argv );
+
+
 
 
 

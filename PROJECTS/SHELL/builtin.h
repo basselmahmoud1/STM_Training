@@ -45,8 +45,6 @@ char * cd (int argc , char ** argv);
 
 void envir (void) ;
 
-void env_var ( int argc , char ** argv );
-
 void ps (const process *history );
 
 void myfree (int argc , char ** argv);

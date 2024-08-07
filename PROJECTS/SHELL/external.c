@@ -40,42 +40,8 @@ void addProcessToHistory (pid_t CPID , char* p_name ,  int state ,char ** argv )
 	process_count ++ ;
 }
 
-|| strcmp(argv[i],"<") == 0 || strcmp(argv[i],"2>&1") == 0
-void redirections (int argc , char ** argv ,operant op , int loc)
-{
-	int i ;
-	for( i = 0 ; i < argc ; i++)
-	{
-		if( strcmp(argv[i],">") == 0 )
-		{
-			
-		}
-	
-	
-	
-	}
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-}
+
+
 
 
 
@@ -83,6 +49,8 @@ void perform_EXT (int argc,char** argv,operant op , int loc)
 {
 	if (argc < 1 )
 		return;
+	
+	redirections(argc, argv);
 	
 	if(op == pipe_p)
 	{

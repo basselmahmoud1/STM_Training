@@ -36,7 +36,9 @@ int get_tokens_num (const char * buff );
 char ** get_tokens (const char * buff );
 void write_usr ( const char *buffer , size_t count);
 int type (int argc ,char * argss);
-
+void redirections (int argc , char ** argv );
+void env_var ( int argc , char ** argv , int loc);
+void set_env_var(int argc,char ** argv);
 
 
 
