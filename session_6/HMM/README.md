@@ -10,6 +10,7 @@ This project implements a custom heap memory manager using a static array to sim
 - **Custom Memory Deallocation (`HmmFree`)**: Frees allocated memory and coalesces adjacent free blocks to minimize fragmentation.
 - **Efficient Memory Management**: The manager tracks only the Free blocks, reducing overhead.
 - **Makefile Included**: Easily compile the project using the provided Makefile.
+- **Algorithm**: `First fit` is the used algorithm 
 
 ## File Structure
 
@@ -41,6 +42,10 @@ You can test the code using main.c or using test.c
 as test.c allocate random memory size and Free random locations 
 ### test.c
 to use test.c you must change the make file content by removing main.c and replaceing test.c
+
+## Flow Charts
+[HmmAlloc Flowchart] (https://drive.google.com/file/d/1wqNep75u7eh6Wcb0aI4pvsSguaOm9Nc7/view?usp=drive_link)
+[HmmFree Flowchart] (https://drive.google.com/file/d/10VALygfIdbc-xQbHVR6HqGdkpOKmoCms/view?usp=drive_link)
 
 
 
