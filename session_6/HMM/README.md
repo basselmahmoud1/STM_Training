@@ -44,9 +44,9 @@ as test.c allocate random memory size and Free random locations
 to use test.c you must change the make file content by removing main.c and replaceing test.c
 
 ## Flow Charts
-[HmmAlloc Flowchart] (https://drive.google.com/file/d/1wqNep75u7eh6Wcb0aI4pvsSguaOm9Nc7/view?usp=drive_link)
+[HmmAlloc Flowchart](https://drive.google.com/file/d/1wqNep75u7eh6Wcb0aI4pvsSguaOm9Nc7/view?usp=drive_link)
 
-[HmmFree Flowchart] (https://drive.google.com/file/d/10VALygfIdbc-xQbHVR6HqGdkpOKmoCms/view?usp=drive_link)
+[HmmFree Flowchart](https://drive.google.com/file/d/10VALygfIdbc-xQbHVR6HqGdkpOKmoCms/view?usp=drive_link)
 
 
 
