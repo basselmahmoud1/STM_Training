@@ -38,10 +38,10 @@ you can run the program using
 ```
 ## Testing 
 
-You can test the code using main.c or using test.c
-as test.c allocate random memory size and Free random locations 
+You can test the code using `main.c` or using `test.c`
+as `test.c` allocate random memory size and Free random locations 
 ### test.c
-to use test.c you must change the make file content by removing main.c and replaceing test.c
+to use `test.c` you must change the `Makefile` content by removing `main.c` and replacing it with `test.c`
 
 ## Flow Charts
 [HmmAlloc Flowchart](https://drive.google.com/file/d/1wqNep75u7eh6Wcb0aI4pvsSguaOm9Nc7/view?usp=drive_link)
