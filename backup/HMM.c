@@ -15,21 +15,28 @@ char*  base = NULL ;
 int flag_init=0;
 #endif
 
-int debug =0; 
+int debug =0;
+int debugger =0; 
+
 node_mod* head = NULL ;
 const size_t sizenode = alignsize(sizeof(node_mod));
+const size_t sizesize = alignsize(sizeof(int)*2);
+
 
 void* HmmAlloc (size_t size)
 {
+    debugger++;
 
     if(size == 0)
-        size = sizenode+10;
+        size = sizenode;
 	if(debug == 0 )
 	{
 		//sleep(20);
 		debug=1 ;
 	}
-    size = alignsize(size);
+    size = alignsize(size) ;
+    if(size == 8)
+    size += 16;
 	
 	if(size == 0 )
 		return NULL ;
@@ -48,7 +55,7 @@ void* HmmAlloc (size_t size)
 			return NULL;
 		}
         head = (node_mod*) base; 
-        head->size= (int)(program_break - base -sizenode) ; 
+        head->size= (int)(program_break - base -sizesize) ; 
         head->ptrNext = NULL ;
         head->ptrPrev = NULL ;
 
@@ -64,12 +71,13 @@ void* HmmAlloc (size_t size)
     node_mod* sercher = head ;
     // list is empty
     //check if there is an accepted free node in the middle
-    while (sercher->ptrNext != NULL) {   // !=
+    node_mod* carrier = sercher ;
+    while (sercher != NULL) {   // !=
         if(sercher->size >= size+sizenode) {
         	// bos hena mmkn tshof 3lshan my3odsh y3mel nodes free so8ayara awy 
-            if(sercher->size-size>sizenode) // lazem el makan el ba2i ykafi enna n3mel node gededa
-            {
-                node_mod * split_mem = (node_mod*)((char*)sercher+size+sizenode);
+            // lazem el makan el ba2i ykafi enna n3mel node gededa
+            
+                node_mod * split_mem = (node_mod*)((char*)sercher+size+sizesize);
             
                 split_mem->ptrPrev = sercher->ptrPrev;
                 if(sercher->size - size - sizenode <= 0)
@@ -77,119 +85,145 @@ void* HmmAlloc (size_t size)
                     perror("size isnt enough to split");    
                     return NULL;
                 }
-                split_mem->size = sercher->size - size - sizenode;
+                split_mem->size = sercher->size - size - sizesize;
                 
                 insert_node_mod(split_mem);
-                sercher->size = size ;
-                sercher->ptrNext = split_mem;
-            }
-            node_mod * ptr = sercher ;
-            ptr +=1 ;
+                sercher->size = size;
+                //sercher->ptrNext = split_mem;
+            
+            int* ptr = (int*)sercher ;
+            ptr +=2 ;
             deleteNode(sercher);
             return (void*)ptr ;
         }
+        if(sercher->ptrNext == NULL ) // to scan the last node with you 
+            carrier = sercher;
         sercher = sercher->ptrNext ;
     }
+    if(sercher == NULL )
+        sercher = carrier;
 
 // check if the avaliablie size of the last node is big enough for the new size nedded to be allocated
-    if (size >= (int)((char*)program_break-(char*)sercher-sizenode)) {
-        int req_space = size - ((int)((char*)program_break-(char*)sercher));
+    //if (size >= (int)((char*)program_break-(char*)sercher-sizesize)) 
+    // check if the last node is adjacent with the program_break 
+    if ((char*)((char*)sercher+sercher->size+sizesize) == program_break) 
+    {
+        //int req_space = size - ((int)((char*)program_break-(char*)sercher-sizesize));
+    
+        int req_space = size - sercher->size;
         int units = req_space/PAGE_SIZE ;
         units += 2 ;
-         
+        
         program_break_change(PAGE_SIZE*(units));
         
-        sercher->ptrNext = NULL ; // the new program break value
-        node_mod * split_mem = (node_mod*)((char*)sercher+size+sizenode); //edited
+        sercher->ptrNext = NULL ; 
+        // Hena msh lazem a3mel check 3la el size eli ba2i feeh makan leeh size el nod wala laa 3lshna ana b3mel allocation beeh size kebeer
+        node_mod * split_mem = (node_mod*)((char*)sercher+size+sizesize);
         split_mem->ptrPrev = sercher->ptrPrev;
-        split_mem->size= (int)((char*)program_break-(char*)split_mem) - sizenode ;
+        split_mem->size= (int)((char*)program_break-(char*)split_mem) - sizesize ;
         insert_node_mod(split_mem);
-        
         
         sercher->size = size ;
        // sercher->ptrNext = split_mem;
-        node_mod * ptr = sercher ;
-        ptr +=1 ;
+        int* ptr = (int*)sercher ;
+        ptr +=2 ;
         deleteNode(sercher);
         return (void*)ptr ;
 
     }
-    /////////////////////////////////////////ANA w2eft heana
-    else if (sercher->ptrNext == NULL   ) {
-  
-          //  printf("hello");
-          //	char*debug = sbrk(0);//for debugging
-          
-            node_mod* split_mem = (node_mod*)((char*)sercher+size+sizenode); //edited
-            if( program_break - (char*)split_mem <= sizenode)
-            {
-               // write(1,"entered inc space in the second time\n",38);
-            	int req_space = ((int)((char*)split_mem-(char*)program_break));
-            	int units = req_space/PAGE_SIZE ;
-                units += 2 ;
-                program_break_change(PAGE_SIZE*(units));
-                sercher->ptrNext = NULL;
-	        }
-	    //char* debug2 = sbrk(0);
-            //printf("hi");
-
-            split_mem->ptrPrev = sercher;
-            split_mem->size = (char*)program_break - (char*)split_mem - sizeof(node_mod*);
-
-            insert_node_mod(split_mem);
-
-            sercher->size = size ;
-            node_mod * ptr = sercher ;
-            ptr +=1 ;
-            deleteNode(sercher);
-            return (void*)ptr ;
+    else //increase the program _break to make new node
+    {
+        node_mod * newnode = (node_mod*)(program_break);
+        int inc_units = size/PAGE_SIZE;
+        inc_units += 2;
+        program_break_change(inc_units*PAGE_SIZE);
+        newnode->size = (int)(program_break - (char*)newnode - sizesize);
+        insert_node_mod(newnode);
+        node_mod* split_mem = (node_mod*)((char*)newnode + sizesize + size) ;
+        newnode->size = size;
+        split_mem->size = (int)(program_break - (char*)split_mem - sizesize);
+        insert_node_mod(split_mem);
+        int* ptr = (int*)newnode ;
+        ptr +=2 ;
+        deleteNode(newnode);
+        return (void*)ptr ;
     }
+    // else if (sercher->ptrNext == NULL   ) {
+  
+    //       //  printf("hello");
+    //       //	char*debug = sbrk(0);//for debugging
+          
+    //         node_mod* split_mem = (node_mod*)((char*)sercher+size+sizesize); //edited
+    //         if( program_break - (char*)split_mem <= sizenode)
+    //         {
+    //            // write(1,"entered inc space in the second time\n",38);
+    //         	int req_space = ((int)((char*)split_mem-(char*)program_break));
+    //         	int units = req_space/PAGE_SIZE ;
+    //             units += 2 ;
+    //             program_break_change(PAGE_SIZE*(units));
+    //             sercher->ptrNext = NULL;
+	//         }
+	//     //char* debug2 = sbrk(0);
+    //         //printf("hi");
 
-    else
-        return NULL ;
+    //         split_mem->ptrPrev = sercher;
+    //         split_mem->size = (char*)program_break - (char*)split_mem - sizeof(node_mod*);
+
+    //         insert_node_mod(split_mem);
+
+    //         sercher->size = size ;
+    //         node_mod * ptr = sercher ;
+    //         ptr +=1 ;
+    //         deleteNode(sercher);
+    //         return (void*)ptr ;
+    // }
+    
+    
 }
 
 
 
 void HmmFree (void * ptr ) {
     // iterate through nodes and check the adrress if it lies between 2 nodes of not
-
     if(ptr == NULL)
         return;
     // *((int*)ptr)=0;
-    node_mod* req = (node_mod*) ptr -1  ;
+    node_mod* req = (node_mod*) ((int*)ptr -2)  ;
     node_mod* sercher = head ;
 
-    while ( sercher < req && sercher != NULL ) { //( sercher < req && sercher != NULL )
-        if(sercher->ptrNext == NULL)
-        {
-            break ;    
-        }
-        sercher = sercher->ptrNext ;
-    }
+    // while ( sercher < req && sercher != NULL ) { //( sercher < req && sercher != NULL )
+    //     if(sercher->ptrNext == NULL)
+    //     {
+    //         break ;    
+    //     }
+    //     sercher = sercher->ptrNext ;
+    // }
 
-    if (sercher != NULL) { //(sercher != NULL)
-        sercher = sercher->ptrPrev;
-    }
+    // if (sercher != NULL) { //(sercher != NULL)
+    //     sercher = sercher->ptrPrev;
+    // }
     
 
-    req->ptrPrev = sercher;
+    // req->ptrPrev = sercher;
 
     insert_node_mod(req);
 
     sercher = head;
     node_mod* next = sercher->ptrNext; 
-    while (sercher != NULL && sercher->ptrNext != NULL ) {
+    if(next == NULL)
+        return;
+    while (sercher->ptrNext != NULL ) {
         // Check if the current block and the next block are adjacent in memory
-        if ((char*)next == (char*)sercher + sercher->size + sizenode) {
+        if ((char*)next == (char*)sercher + sercher->size + sizesize) {
             // Merge the current block with the next block
-            sercher->size += next->size + sizenode;
+            sercher->size += next->size + sizesize;
             sercher->ptrNext = next->ptrNext;
 
             // Update the next block's prev pointer, if it's not the end of the list
             if (next->ptrNext != NULL) {
                 next->ptrNext->ptrPrev = sercher;
             }
+            
         } 
         else 
         {
@@ -199,6 +233,36 @@ void HmmFree (void * ptr ) {
                 next = sercher->ptrNext;
             else
                 break;
+        }
+    }
+    // dec program_break 
+    node_mod* examin = head ;
+    int flag_head =0 ;
+    while (examin->ptrNext != NULL) {
+        examin = examin->ptrNext;
+    }
+    //check if the last node is adjacent to the program_break
+    if( (char*)((char*)examin + sizesize + examin->size) == program_break  ) {
+        int remaining_space = (int)((char*)program_break - (char*)examin-sizesize) ;
+        
+        int units =remaining_space/(PAGE_SIZE);
+        // if(head == NULL)
+        //     flag_head=1;
+        if(units>2) 
+        {
+            units-- ;
+            program_break_change(-units*PAGE_SIZE);
+           // examin->ptrNext =NULL; //update with the new program_break
+            // if(flag_head == 1)
+            //     head = (node_mod*)program_break;
+
+            remaining_space = (int)((char*)program_break - (char*)examin- sizesize);
+            examin->size=remaining_space;
+            return;
+        }
+        else 
+        {
+            return;
         }
     }
 

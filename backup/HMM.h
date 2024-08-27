@@ -8,7 +8,7 @@
 
 #define Size_of_heap 1073741824
 #define PAGE_SIZE  4096
-#define replacelibc // NOreplace or replacelibc
+#define NOreplacelibc // NOreplace or replacelibc
 #define HEAP    // HEAP or SARR
 
 void* HmmAlloc (size_t size);
@@ -34,6 +34,8 @@ extern int flag_init;
 extern struct node_mod* head;
 extern char end ;
 extern const size_t sizenode;
+extern const size_t sizesize;
+
 
 
 #endif
