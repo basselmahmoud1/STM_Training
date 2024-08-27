@@ -2,14 +2,15 @@
 
 ## Project Overview
 
-This project implements a custom heap memory manager using a static array to simulate the heap. It uses a doubly linked list to manage free memory blocks and handle dynamic memory allocation and deallocation, similar to the `malloc` and `free` functions in the C standard library. The project also includes a custom implementation of the `HmmAlloc` and `HmmFree` functions.
+This project implements a custom heap memory manager using a real heap. It uses a doubly linked list to manage free memory blocks and handle dynamic memory allocation and deallocation, which is the same implementation of  `malloc` and `free` functions in the C standard library. The project also includes a custom implementation of the `HmmAlloc` and `HmmFree` functions.
 
 ### Features
 
 - **Custom Memory Allocation (`HmmAlloc`)**: Allocates memory from a static array, managing free and used blocks using a doubly linked list.
 - **Custom Memory Deallocation (`HmmFree`)**: Frees allocated memory and coalesces adjacent free blocks to minimize fragmentation.
 - **Efficient Memory Management**: The manager tracks only the Free blocks, reducing overhead.
-- **Makefile Included**: Easily compile the project using the provided Makefile.
+- **Reallocation of Memory (`realloc`)** : it can increase the size of the previously allocated block without changing its content.
+- **Calloc(`Calloc`)** : it can allocate blocks of memory and initialize that block with `0` . 
 - **Algorithm**: `First fit` is the used algorithm 
 
 ## File Structure
@@ -19,35 +20,32 @@ This project implements a custom heap memory manager using a static array to sim
 - `linkedList.h`: Header file containing the definitions for the doubly linked list used to manage memory blocks.
 - `linkedList.c`: Source file implementing the linked list operations.
 - `main.c`: A test program that demonstrates the usage of the HMM functions.
-- `test.c` : Another test for the program .
-- `Makefile`: A makefile to build the project.
+- `libhmm.so` : this is the shared lib file that can bu used to replace `malloc` , `free`,`calloc` and `realloc` .
+
 
 ## Compilation
 
 To compile the project, simply run:
 
 ```bash
-make
+gcc -c -fPIC HMM.c linkedList.c
+gcc -shared -o libhmm.so linkedList.o HMM.o
+
+LD_PRELOAD=`realpath libhmm.so` (your application name)
 ```
-This will compile all source files and generate the exe HMM.
+This will compile all source files and generate the shared lib `libhmm.so` .
 
 ## Running 
 you can run the program using
 ```bash
-./HMM (arrgument of function)
+LD_PRELOAD=`realpath libhmm.so` (your application name)
 ```
 ## Testing 
 
-You can test the code using `main.c` or using `test.c`
-as `test.c` allocate random memory size and Free random locations 
-### test.c
-to use `test.c` you must change the `Makefile` content by removing `main.c` and replacing it with `test.c`
+You can test the code using `bash` or using `vim`
 
-## Flow Charts
-[HmmAlloc Flowchart](https://drive.google.com/file/d/1wqNep75u7eh6Wcb0aI4pvsSguaOm9Nc7/view?usp=drive_link)
-
-[HmmFree Flowchart](https://drive.google.com/file/d/10VALygfIdbc-xQbHVR6HqGdkpOKmoCms/view?usp=drive_link)
-
+## Further improvements 
+-The lib can't deal with application using threads as `gdb` it can support it in further versions 
 
 
 
