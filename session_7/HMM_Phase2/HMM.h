@@ -5,9 +5,10 @@
 #include <string.h>
 #include <unistd.h>
 #include "linkedList.h"
+#include <stdint.h>
 
 #define Size_of_heap 1073741824
-#define PAGE_SIZE  4096*1024
+#define PAGE_SIZE  4096
 #define replacelibc // NOreplace or replacelibc
 #define HEAP    // HEAP or SARR
 
@@ -15,7 +16,10 @@ void* HmmAlloc (size_t size);
 
 void HmmFree (void * ptr);
 
-void* program_break_change (int increment);
+void* program_break_change(size_t increment) ;
+
+#define alignsize(x)  (((x+7)/8)*8)
+
 
 #ifdef SARR
 extern char HeapMemory [];
@@ -27,8 +31,14 @@ extern struct node_mod* head;
 #ifdef HEAP
 extern char* program_break;
 extern char*  base ;
-extern int flag_init;
+extern size_t flag_init;
 extern struct node_mod* head;
+extern char end ;
+extern const size_t sizenode;
+extern const size_t sizesize;
+extern size_t internal_counter;
+
+
 
 #endif
 

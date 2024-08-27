@@ -1,12 +1,11 @@
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include"HMM.h"
-
+/**/
 #define NUM_ALLOCS 10000
-#define MAX_SIZE 102400
+#define MAX_SIZE 10240
 #define MAX_ITERATIONS 1000000
 
 void random_alloc_free_test() {
@@ -20,11 +19,14 @@ void random_alloc_free_test() {
             // Allocate memory
             size_t size = (size_t)(rand() % MAX_SIZE) + 1;
             pointers[index] = HmmAlloc(size);
+
             if (pointers[index] != NULL) {
                 printf("Allocated memory of size %zu at address %p\n", size, pointers[index]);
-            } else {
+            } if ((size_t)(pointers[index]) % 8 != 0) {
                 fprintf(stderr, "Allocation failed for size %zu\n", size);
+                exit(0);
             }
+
         } else {
             // Free memory
             printf("Freeing memory at address %p\n", pointers[index]);
@@ -52,7 +54,6 @@ int main() {
 
 
 
-
 /*************************************************************************\
 *                  Copyright (C) Michael Kerrisk, 2023.                   *
 *                                                                         *
@@ -64,9 +65,9 @@ int main() {
 \*************************************************************************/
 
 
-
-// Listing 7-1
 /*
+// Listing 7-1
+
 //#define _BSD_SOURCE
 //#include "tlpi_hdr.h"
 #include <stdio.h>
@@ -81,7 +82,7 @@ int main() {
 
 extern char end, edata, etext;
 
-#if 0
+#if 1
 // Enable if you want to replace libc malloc/free 
 void * malloc (size_t size) {
     return HmmAlloc(size);
@@ -175,10 +176,10 @@ void *realloc(void *ptr ,size_t size ) {
 int
 main(int argc, char *argv[])
 {
+	//sleep(5);
     char *ptr[MAX_ALLOCS];
     int freeStep, freeMin, freeMax, blockSize, numAllocs, j;
-
-    printf("etext = %p, edata=%p, end=%p, initial program break=%p\n", &etext, &edata, &end, (char*)sbrk(0));
+   printf("etext = %p, edata=%p, end=%p, initial program break=%p &sbrk=%p \n", &etext, &edata, &end,program_break,(char*)sbrk(0));
 
     if (argc < 3 || strcmp(argv[1], "--help") == 0) {
         printf("%s num-allocs block-size [step [min [max]]]\n", argv[0]);
@@ -198,33 +199,49 @@ main(int argc, char *argv[])
     freeMax =  (argc > 5) ? getInt(argv[5], GN_GT_0, "max") : numAllocs;
 
     if (freeMax > numAllocs) {
-        printf("free-max > num-allocs\n");
+       // printf("free-max > num-allocs\n");
         exit(1);
     }
 
-    printf("Initial program break:          %10p\n", sbrk(0));
+    printf("Initial sbrk:          %10p& prog : %10p\n ", sbrk(0),program_break);
 
     printf("Allocating %d*%d bytes\n", numAllocs, blockSize);
     for (j = 0; j < numAllocs; j++) {
-        ptr[j] = malloc(blockSize);
+        ptr[j] = HmmAlloc(blockSize);
         if (ptr[j] == NULL) {
-            printf("malloc returned null\n");
+          printf("malloc returned null\n");
             exit(1);
         }
     }
 
-    printf("Program break is now:           %10p\n", sbrk(0));
+     printf("Program break is now:           %10p\n", sbrk(0));
 
-    printf("Freeing blocks from %d to %d in steps of %d\n",
-                freeMin, freeMax, freeStep);
+    printf("Freeing blocks from %d to %d in steps of %d\n",freeMin, freeMax, freeStep);
     for (j = freeMin - 1; j < freeMax; j += freeStep)
-        free(ptr[j]);
+        HmmFree(ptr[j]);
 
-    printf("After free(), program break is: %10p\n", sbrk(0));
-    while(1);
+    printf("After free(),sbrk is: %10p& prog : %10p\n ", sbrk(0),program_break);
+   while(1);
 
     exit(EXIT_SUCCESS);
+    }
+/*
+//#include "HMM.h"
+int main (void)
+{
+	int i =0 ;
+	char*ptr= HmmAlloc(900);
+	char * carry = ptr ;
+	for(i=0 ; i < 900 ; i++ )
+	{
+
+		*carry = i ;
+		printf("memory address : %p ,value in it : %d \n",carry,*carry);
+		carry++;
+	}
+	
+	HmmFree(ptr);
+
 }
 */
-
 
