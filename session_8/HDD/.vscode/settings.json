@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "myfdisk.h": "c",
-        "linkedlist.h": "c",
-        "compare": "c",
-        "type_traits": "c"
-    },
-    "C_Cpp.errorSquiggles": "disabled"
-}
