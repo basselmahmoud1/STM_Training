@@ -1,6 +1,6 @@
 #include "functions.h"
 
-uint8_t f_l, f_a, f_t, f_u, f_c, f_i, f_f, f_d, f_1, f_noopt, f_error,f_showaccess,f_showmod,f_symlink;
+uint8_t f_l, f_a, f_t, f_u, f_c, f_i, f_f, f_d, f_1, f_noopt, f_error, f_showaccess, f_showmod, f_symlink;
 // index of the
 uint8_t argv_index_beg1 = 0; // is used inside the opendir function
 uint8_t argv_index_beg2 = 0;
@@ -181,7 +181,7 @@ const char *gid_to_name(all_info *node)
 
 const char *filetype_conversion(all_info *node, mode type)
 {
-    f_symlink = 0 ;
+    f_symlink = 0;
     if ((node->inode_info.st_mode & 0170000) == 0010000)
     {
         const char *cons = (type == short_formate) ? "p" : "Pipe";
@@ -215,7 +215,7 @@ const char *filetype_conversion(all_info *node, mode type)
     {
         // printf("%s is a Soft link\n");
         const char *cons = (type == short_formate) ? "l" : "Soft link";
-        f_symlink = 1 ;
+        f_symlink = 1;
         return cons;
     }
     else if ((node->inode_info.st_mode & 0170000) == 0140000)
@@ -264,7 +264,7 @@ const char *permissions(all_info *node)
         str[5] = 's';
     if ((mode & 0001000) == 0001000)
         str[8] = 't';
-    const char* copy = strdup(str); 
+    const char *copy = strdup(str);
     return copy;
 }
 
@@ -353,110 +353,116 @@ void sort_nodes(all_info *nodes, int no_entry, mode type)
     {
         qsort(nodes, no_entry, sizeof(all_info), cmp_time_mod);
     }
-    
 }
 
-
-void sort_flags(all_info* nodes,int no_entry)
+void sort_flags(all_info *nodes, int no_entry)
 {
-    f_showaccess = 0 , f_showmod = 0;
-    if(f_f == 1)
+    f_showaccess = 0, f_showmod = 0;
+    if (f_f == 1)
     {
-        return ;
+        return;
     }
-    else if(f_u == 1 )
+    else if (f_u == 1)
     {
-        if(f_l == 1 && f_t == 1 )
+        if (f_l == 1 && f_t == 1)
         {
-            //sort by access time & show access time
-            sort_nodes(nodes,no_entry,sort_access_time);
-            f_showaccess = 1 ;
+            // sort by access time & show access time
+            sort_nodes(nodes, no_entry, sort_access_time);
+            f_showaccess = 1;
             return;
         }
-        else if(f_l == 1 )
+        else if (f_l == 1)
         {
-            //sort by name & show access time
-            sort_nodes(nodes,no_entry,sort_name);
-            f_showaccess = 1 ;
+            // sort by name & show access time
+            sort_nodes(nodes, no_entry, sort_name);
+            f_showaccess = 1;
             return;
         }
         else
         {
             // only sort by access time (short format)
-            sort_nodes(nodes,no_entry,sort_access_time);
-            return;
-        }  
-    } 
-    else if(f_c == 1 )
-    {
-        if(f_l == 1 && f_t == 1 )
-        {
-            //sort by modq time & show mod time
-            sort_nodes(nodes,no_entry,sort_mod_time);
-            f_showmod = 1 ;
+            sort_nodes(nodes, no_entry, sort_access_time);
             return;
         }
-        else if(f_l == 1 )
+    }
+    else if (f_c == 1)
+    {
+        if (f_l == 1 && f_t == 1)
         {
-            //sort by name & show mod time
-            sort_nodes(nodes,no_entry,sort_name);
-            f_showmod = 1 ;
+            // sort by modq time & show mod time
+            sort_nodes(nodes, no_entry, sort_mod_time);
+            f_showmod = 1;
+            return;
+        }
+        else if (f_l == 1)
+        {
+            // sort by name & show mod time
+            sort_nodes(nodes, no_entry, sort_name);
+            f_showmod = 1;
             return;
         }
         else
         {
             // only sort by mod time (short format)
-            sort_nodes(nodes,no_entry,sort_mod_time);
+            sort_nodes(nodes, no_entry, sort_mod_time);
             return;
-        }  
-    }
-    else if(f_t == 1)
-    {
-        sort_nodes(nodes,no_entry,sort_mod_time);
-        return;
-    }
-    
-}
-
-void print_time (all_info* node)
-{
-    if(f_showaccess == 1)
-    {
-        printf("%s ",time_conversion(node,accesstime));
-        return;
-    }
-    else if(f_showmod == 1)
-    {
-        printf("%s ",time_conversion(node,modificationtime));
-        return;
-    }
-}
-
-void print_file_name (all_info* node,char** argv,int counter)
-{
-
-    if (f_symlink == 1)
-    {
-        char argv_copy[4096]  ;
-        #ifdef debug 
-            printf("the index of the sym link is the path no :%d/n",argv_index_beg2-(counter));
-        #endif
-        snprintf(argv_copy, sizeof(argv_copy), "%s/%s", argv[argv_index_beg2-(counter)], node->dir_info.d_name);
-        char buffer[4096];
-        int error = readlink(argv_copy,buffer,4096);
-        if(error == -1 )
-        {
-            perror("readlink");  
-            exit(0);
         }
-        buffer[error] = '\0';
-        printf("%s -> %s\n",node->dir_info.d_name,buffer);
-    }    
+    }
+    else if (f_t == 1)
+    {
+        sort_nodes(nodes, no_entry, sort_mod_time);
+        return;
+    }
+}
+
+void print_time(all_info *node)
+{
+    if (f_showaccess == 1)
+    {
+        printf("%.11s ", time_conversion(node, accesstime) + 4);
+        return;
+    }
+    else if (f_showmod == 1)
+    {
+        printf("%.11s ", time_conversion(node, modificationtime) + 4);
+        return;
+    }
     else
     {
-        printf("%s \n",node->dir_info.d_name);
+        printf("%.11s ", time_conversion(node, accesstime) + 4);
+        return;
     }
+}
 
-    
-
+void print_file_name(all_info *node, char **argv, int counter)
+{
+    if (f_l == 1)
+    {
+        if (f_symlink == 1)
+        {
+            char argv_copy[4096];
+            #ifdef debug
+            printf("the index of the sym link is the path no :%d/n", argv_index_beg2 - (counter));
+            #endif
+            snprintf(argv_copy, sizeof(argv_copy), "%s/%s", argv[argv_index_beg2 - (counter)], node->dir_info.d_name);
+            char buffer[4096];
+            int error = readlink(argv_copy, buffer, 4096);
+            if (error == -1)
+            {
+                perror("readlink");
+                exit(0);
+            }
+            buffer[error] = '\0';
+            printf("%s -> %s\n", node->dir_info.d_name, buffer);
+        }
+        else
+        {
+            printf("%s \n", node->dir_info.d_name);
+        }
+    }
+    else 
+    {
+        
+        printf("%-10s  ",node->dir_info.d_name);
+    }
 }
