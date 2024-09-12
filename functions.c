@@ -311,7 +311,7 @@ static int cmp_name(const void *p1, const void *p2)
 {
     const all_info *info1 = (const all_info *)p1;
     const all_info *info2 = (const all_info *)p2;
-    return strcmp(toLowerCase(info1->dir_info.d_name), toLowerCase(info2->dir_info.d_name));
+    return strcoll(info1->dir_info.d_name,info2->dir_info.d_name);
 }
 
 static int cmp_time_mod(const void *p1, const void *p2)
@@ -413,23 +413,28 @@ void sort_flags(all_info *nodes, int no_entry)
         sort_nodes(nodes, no_entry, sort_mod_time);
         return;
     }
+    else 
+    {
+        sort_nodes(nodes, no_entry, sort_name);
+        return;
+    }
 }
 
 void print_time(all_info *node)
 {
     if (f_showaccess == 1)
     {
-        printf("%.11s ", time_conversion(node, accesstime) + 4);
+        printf("%.12s ", time_conversion(node, accesstime) + 4);
         return;
     }
     else if (f_showmod == 1)
     {
-        printf("%.11s ", time_conversion(node, modificationtime) + 4);
+        printf("%.12s ", time_conversion(node, modificationtime) + 4);
         return;
     }
     else
     {
-        printf("%.11s ", time_conversion(node, accesstime) + 4);
+        printf("%.12s ", time_conversion(node, accesstime) + 4);
         return;
     }
 }
