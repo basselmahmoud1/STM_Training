@@ -1,3 +1,5 @@
+
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
@@ -13,9 +15,11 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <inttypes.h>
+#include <grp.h>
+
 
 #define printable(ch) (isprint((unsigned char) ch) ? ch : '#')
-#define debug 
+#define noDebug 
 
 typedef struct direc_struct
 {
@@ -27,6 +31,19 @@ typedef struct all_info
     direc_struct dir_info;
     struct stat inode_info;
 }all_info;
+typedef enum mode{
+    //format
+    short_formate,
+    long_formate,
+    // time modes
+    accesstime,
+    modificationtime,
+    changetime,
+    //sort technique
+    sort_name,
+    sort_access_time ,
+    sort_mod_time ,
+}mode;
 
 
 extern uint8_t argv_index_beg1,argv_index_beg2 ;
@@ -42,7 +59,19 @@ int dir_table (int argc , char** argv,all_info** inode_names);
 
 void inode_info (char** argv,int no_entry,all_info** nodes);
 
+//make helping functions to help in printing 
 
-
+//map the user and group id to there name 
+const char* uid_to_name ( all_info* node  );
+const char* gid_to_name ( all_info* node  );
+const char* filetype_conversion (all_info* node,mode type );
+const char* permissions (all_info* node);
+const char *time_conversion (all_info *node, mode type);
+//compare algorithms 
+char* toLowerCase(const char *str);
+static int cmp_name (const void *p1, const void *p2);
+static int cmp_time_mod (const void *p1, const void *p2);
+static int cmp_time_access (const void *p1, const void *p2);
+void sort_nodes (all_info* nodes,int no_entry,mode type);
 
 #endif
