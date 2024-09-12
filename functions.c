@@ -1,6 +1,6 @@
 #include "functions.h"
 
-uint8_t f_l, f_a, f_t, f_u, f_c, f_i, f_f, f_d, f_1, f_noopt, f_error, f_showaccess, f_showmod, f_symlink;
+uint8_t f_l, f_a, f_t, f_u, f_c, f_i, f_f, f_d, f_1, f_noopt, f_error, f_showaccess, f_showmod, f_symlink,f_multipesource;
 // index of the
 uint8_t argv_index_beg1 = 0; // is used inside the opendir function
 uint8_t argv_index_beg2 = 0;
@@ -441,6 +441,14 @@ void print_time(all_info *node)
 
 void print_file_name(all_info *node, char **argv, int counter)
 {
+    char *color_code = "\033[0m";
+    if (S_ISDIR(node->inode_info.st_mode)) {
+        color_code = "\033[1;34m";  // Blue for directories
+    } else if (S_ISLNK(node->inode_info.st_mode)) {
+        color_code = "\033[1;36m";  // Cyan for symbolic links
+    } else if (node->inode_info.st_mode & S_IXUSR) {
+        color_code = "\033[1;32m";  // Green for executable files
+    }
     if (f_l == 1)
     {
         if (f_symlink == 1)
@@ -458,16 +466,16 @@ void print_file_name(all_info *node, char **argv, int counter)
                 exit(0);
             }
             buffer[error] = '\0';
-            printf("%s -> %s\n", node->dir_info.d_name, buffer);
+            printf("%s%s\033[0m -> %s\n",color_code, node->dir_info.d_name, buffer);
         }
         else
         {
-            printf("%s \n", node->dir_info.d_name);
+            printf("%s%s\033[0m \n", color_code,node->dir_info.d_name);
         }
     }
     else 
     {
         
-        printf("%-10s  ",node->dir_info.d_name);
+        printf("%s%-10s\033[0m  ",color_code,node->dir_info.d_name);
     }
 }

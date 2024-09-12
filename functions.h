@@ -49,7 +49,7 @@ typedef enum mode{
 extern uint8_t argv_index_beg1,argv_index_beg2 ;
 extern char *optarg;
 extern int optind, opterr, optopt;
-extern uint8_t f_l , f_a , f_t , f_u, f_c, f_i, f_f, f_d, f_1,f_noopt,f_error,f_showaccess,f_showmod,f_symlink;
+extern uint8_t f_l , f_a , f_t , f_u, f_c, f_i, f_f, f_d, f_1,f_noopt,f_error,f_showaccess,f_showmod,f_symlink,f_multipesource;
 
 
 

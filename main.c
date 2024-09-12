@@ -25,11 +25,17 @@ int main(int argc, char **argv)
         argv[optind] = ".";
     // loop on counts to implement ls
     argv_index_beg2 = index;
+    if(counter > 1)
+        f_multipesource = 1;
     while (counter--)
     {
 #ifdef debug
         printf("counter %d \n", counter);
 #endif
+        if(f_multipesource != 0)
+        {
+            printf("%s:\n",argv[argv_index_beg2 - (counter+1)]);
+        }
         // prepare the data to be printed
 
         // open the dir and get the entry (inode no and name )
@@ -39,7 +45,7 @@ int main(int argc, char **argv)
 
         // read all of the inodes and save them inside an array of structures
         inode_info(argv, no_entry, &nodes);
-
+        static int con = 1;
         if (f_l == 1)
         {
             /************************print in long format **********************/
@@ -104,7 +110,7 @@ int main(int argc, char **argv)
 
                 // print file name
                 print_file_name(copy_struct_nodes, argv, counter);
-                static int con = 1;
+                
                 int copy_of_counter = counter;
                 if(copy_of_counter!=counter)
                 {
@@ -122,12 +128,12 @@ int main(int argc, char **argv)
 
                 copy_struct_nodes++;
             }
-            // if (f_1 != 1)
-            //     printf("\n");
+            if (f_1 != 1 && con != 1 )
+                printf("\n");
         }
 
         if (counter != 0)
-            printf("\n\n");
+            printf("\n");
         // dont forget to free the inode_names
         free(nodes);
     }
@@ -135,21 +141,3 @@ int main(int argc, char **argv)
     return 0;
 }
 
-// if (f_noopt)
-//         {
-//             all_info *copy_struct_nodes = nodes;
-//             for (int i = 0; i <= no_entry; i++)
-//             {
-//                 if (copy_struct_nodes->dir_info.d_name[0] == '.')
-//                 {
-//                    // copy_struct_nodes++;
-//                     //continue;
-//                 }
-//                 printf("%s\t", copy_struct_nodes->dir_info.d_name);
-//                 copy_struct_nodes++;
-//             }
-//             printf("\n");
-
-//             free(nodes);
-//             continue;
-//         }
