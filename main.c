@@ -22,13 +22,14 @@ int main(int argc, char **argv)
         index++;
     }
     if (argv[optind] == NULL)
-        argv[1] = ".";
+        argv[optind] = ".";
     // loop on counts to implement ls
+    argv_index_beg2 = index ; 
     while (counter--)
     {
-#ifdef debug
+        #ifdef debug
         printf("counter %d \n", counter);
-#endif
+        #endif
         // prepare the data to be printed
 
         // open the dir and get the entry (inode no and name )
@@ -39,42 +40,97 @@ int main(int argc, char **argv)
         // read all of the inodes and save them inside an array of structures
         inode_info(argv, no_entry, &nodes);
 
-        if (f_noopt)
-        {
+        if(f_l == 1)
+        {   
+            /************************print in long format **********************/
+            // determine the sorting algorithm
             all_info *copy_struct_nodes = nodes;
-            #if 0
-            for (int i = 0; i <= no_entry; i++)
+            sort_flags(nodes,no_entry);
+            for(int i = 0 ; i <= no_entry ; i++ )
             {
-                printf("Before sorting: %s\n", nodes[i].dir_info.d_name);
-            }
-
-            // Call sort function
-
-            for (int i = 0; i <= no_entry; i++)
-            {
-                printf("After sorting: %s\n", nodes[i].dir_info.d_name);
-            }
-            #endif 
-            sort_nodes(nodes, no_entry, sort_name);
-
-            for (int i = 0; i <= no_entry; i++)
-            {
-                if (copy_struct_nodes->dir_info.d_name[0] == '.')
+                if(f_a == 0)
                 {
-                   // copy_struct_nodes++;
-                    //continue;
+                    if(copy_struct_nodes->dir_info.d_name[0] == '.')
+                    {
+                        copy_struct_nodes++;
+                        continue;
+                    }
                 }
-                printf("%s\t", copy_struct_nodes->dir_info.d_name);
-                copy_struct_nodes++;
-            }
-            printf("\n");
+                //check if the inode no will be printed
+                if(f_i)
+                    printf("%ld  ",copy_struct_nodes->dir_info.inode_no);
+                //print the file type & it's permissions
+                printf("%s%s ",
+                    filetype_conversion(copy_struct_nodes,short_formate),
+                    permissions(copy_struct_nodes)
+                );
+                //print no of hard links 
+                printf("%ld ",copy_struct_nodes->inode_info.st_nlink);
 
-            free(nodes);
-            continue;
+                //print owner & group name  
+                printf("%s %s ",uid_to_name(copy_struct_nodes),gid_to_name(copy_struct_nodes) );
+
+                //print size of the file
+
+                printf("%ld ",(uint64_t)copy_struct_nodes->inode_info.st_size);
+
+                //print time 
+                print_time(copy_struct_nodes);
+
+                //print file name 
+
+                print_file_name(copy_struct_nodes,argv,counter);
+
+                copy_struct_nodes ++ ;
+            }
+
+
+
         }
+        else
+        {
+            /************************print in short format **********************/
+        }
+
+        
+        if(counter != 0)
+            printf("\n\n");
         // dont forget to free the inode_names
         free(nodes);
     }
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// if (f_noopt)
+//         {
+//             all_info *copy_struct_nodes = nodes;
+//             for (int i = 0; i <= no_entry; i++)
+//             {
+//                 if (copy_struct_nodes->dir_info.d_name[0] == '.')
+//                 {
+//                    // copy_struct_nodes++;
+//                     //continue;
+//                 }
+//                 printf("%s\t", copy_struct_nodes->dir_info.d_name);
+//                 copy_struct_nodes++;
+//             }
+//             printf("\n");
+
+//             free(nodes);
+//             continue;
+//         }

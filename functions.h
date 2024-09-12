@@ -19,7 +19,7 @@
 
 
 #define printable(ch) (isprint((unsigned char) ch) ? ch : '#')
-#define noDebug 
+#define debug2
 
 typedef struct direc_struct
 {
@@ -49,7 +49,7 @@ typedef enum mode{
 extern uint8_t argv_index_beg1,argv_index_beg2 ;
 extern char *optarg;
 extern int optind, opterr, optopt;
-extern uint8_t f_l , f_a , f_t , f_u, f_c, f_i, f_f, f_d, f_1,f_noopt,f_error;
+extern uint8_t f_l , f_a , f_t , f_u, f_c, f_i, f_f, f_d, f_1,f_noopt,f_error,f_showaccess,f_showmod,f_symlink;
 
 
 
@@ -73,5 +73,11 @@ static int cmp_name (const void *p1, const void *p2);
 static int cmp_time_mod (const void *p1, const void *p2);
 static int cmp_time_access (const void *p1, const void *p2);
 void sort_nodes (all_info* nodes,int no_entry,mode type);
+//API of implementation 
+void sort_flags(all_info* nodes,int no_entry);
+void print_time (all_info* node);
+void print_file_name (all_info* node,char** argv,int counter);
+
+
 
 #endif
