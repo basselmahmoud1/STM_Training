@@ -284,28 +284,6 @@ const char *time_conversion(all_info *node, mode type)
     }
 }
 
-char *toLowerCase(const char *str)
-{
-
-    int length = strlen(str);
-    char *lowerStr = (char *)malloc((length + 1) * sizeof(char));
-    if (lowerStr == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(1);
-    }
-
-    char *temp = lowerStr;
-    while (*str)
-    {
-        *temp = tolower((unsigned char)*str);
-        str++;
-        temp++;
-    }
-    *temp = '\0';
-
-    return lowerStr;
-}
 
 static int cmp_name(const void *p1, const void *p2)
 {

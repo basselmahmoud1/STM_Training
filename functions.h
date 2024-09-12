@@ -68,7 +68,6 @@ const char* filetype_conversion (all_info* node,mode type );
 const char* permissions (all_info* node);
 const char *time_conversion (all_info *node, mode type);
 //compare algorithms 
-char* toLowerCase(const char *str);
 static int cmp_name (const void *p1, const void *p2);
 static int cmp_time_mod (const void *p1, const void *p2);
 static int cmp_time_access (const void *p1, const void *p2);
