@@ -1,4 +1,4 @@
-// receiver.c
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,10 +46,7 @@ int main()
     printf("Waiting \n");
 
     
-    while (1)
-    {
-        //wait
-        pause();
-    }
+    pause();
+    
 
 }
